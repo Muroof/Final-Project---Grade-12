@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import box2dLight.ConeLight;
+import box2dLight.DirectionalLight;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Application;
@@ -47,8 +49,10 @@ public class MainClass extends ApplicationAdapter {
         rayHandler.setAmbientLight(0.1f, 0.1f, 0.1f, 1f);
         rayHandler.setBlurNum(3);
 
-        PointLight pl = new PointLight(rayHandler, 128, new Color(0.2f, 1, 1, 1f), 10, -5, 2);
-        PointLight pl2 = new PointLight(rayHandler, 128, new Color(1, 0, 1, 1f), 10, 5, 2);
+        PointLight pl = new PointLight(rayHandler, 128, Color.RED, 10, -5, 2);
+        DirectionalLight p3 = new DirectionalLight(rayHandler, 10, Color.GREEN, 45);
+        ConeLight p4 = new ConeLight(rayHandler, 128, Color.PINK, 100, 10, 10, 0, 45);
+        PointLight pl2 = new PointLight(rayHandler, 128, Color.BLUE, 10, 5, 2);
 
         rayHandler.setShadows(true);
         pl.setStaticLight(false);
