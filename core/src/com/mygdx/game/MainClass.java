@@ -49,14 +49,29 @@ public class MainClass extends ApplicationAdapter {
         rayHandler.setAmbientLight(0.1f, 0.1f, 0.1f, 1f);
         rayHandler.setBlurNum(3);
 
-        PointLight pl = new PointLight(rayHandler, 128, Color.RED, 10, -5, 2);
-        DirectionalLight p3 = new DirectionalLight(rayHandler, 10, Color.GREEN, 45);
-        ConeLight p4 = new ConeLight(rayHandler, 128, Color.PINK, 100, 10, 10, 0, 45);
-        PointLight pl2 = new PointLight(rayHandler, 128, Color.BLUE, 10, 5, 2);
+        //POINT LIGHTS
+        //PointLight pl2 = new PointLight(rayHandler, 128, Color.BLUE, 10, 5, 2);
+        //PointLight pl = new PointLight(rayHandler, 128, Color.RED, 10, -5, 2);
+        
+        //DIRECTIONAL LIGHTS
+        //DirectionalLight p3 = new DirectionalLight(rayHandler, 20, Color.YELLOW, 90);
 
+        //CONE LIGHTS
+        ConeLight p4 = new ConeLight(rayHandler, 5, Color.YELLOW, 5, -5, 0, 0, 45);
+        //turns on light cone
+        p4.setStaticLight(true);
+        // softens the light so its less harsh
+        p4.setSoft(false);
+        
+        ConeLight p5 = new ConeLight(rayHandler, 5, Color.BLUE, 5, 5, 0, 180, 45);
+        p5.setStaticLight(true);
+        p5.setSoft(false);
+
+        //enables shadows
         rayHandler.setShadows(true);
-        pl.setStaticLight(false);
-        pl.setSoft(true);
+        //turns on point light
+//        pl.setStaticLight(false);
+//        pl.setSoft(true);
     }
 
     @Override
