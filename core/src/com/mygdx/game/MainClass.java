@@ -12,6 +12,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -25,8 +28,10 @@ public class MainClass extends ApplicationAdapter {
     private World world;
     private Stage stage;
     private Box2DDebugRenderer debugRenderer;
-
+    private Body player;
     private RayHandler rayHandler;
+    private ShapeRenderer shapeRend;
+    
 
     @Override
     public void create() {
@@ -50,48 +55,58 @@ public class MainClass extends ApplicationAdapter {
         rayHandler.setBlurNum(3);
 
         //POINT LIGHTS
-        //PointLight pl2 = new PointLight(rayHandler, 128, Color.BLUE, 10, 5, 2);
-        //PointLight pl = new PointLight(rayHandler, 128, Color.RED, 10, -5, 2);
+//        PointLight pl2 = new PointLight(rayHandler, 128, Color.BLUE, 10, 5, 2);
+//        PointLight pl = new PointLight(rayHandler, 128, Color.RED, 10, -5, 2);
         
         //DIRECTIONAL LIGHTS
-        //DirectionalLight p3 = new DirectionalLight(rayHandler, 20, Color.YELLOW, 90);
+//        DirectionalLight p3 = new DirectionalLight(rayHandler, 20, Color.YELLOW, 90);
 
         //CONE LIGHTS
         ConeLight p4 = new ConeLight(rayHandler, 5, Color.YELLOW, 5, -5, 0, 0, 45);
         //turns on light cone
         p4.setStaticLight(true);
+        
         // softens the light so its less harsh
-        p4.setSoft(false);
+        p4.setSoft(true);
         
         ConeLight p5 = new ConeLight(rayHandler, 5, Color.BLUE, 5, 5, 0, 180, 45);
         p5.setStaticLight(true);
-        p5.setSoft(false);
+        p5.setSoft(true);
 
         //enables shadows
         rayHandler.setShadows(true);
         //turns on point light
 //        pl.setStaticLight(false);
 //        pl.setSoft(true);
+        
+        shapeRend = new ShapeRenderer();
+        
     }
 
     @Override
     public void render() {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        shapeRend.begin(ShapeType.Filled);
+        
         stage.act();
         world.step(Gdx.graphics.getDeltaTime(), 6, 2);
         stage.draw();
-
+        
         debugRenderer.render(world, stage.getCamera().combined);
         
         rayHandler.setCombinedMatrix(stage.getCamera().combined, 0, 0, 1, 1);
         rayHandler.updateAndRender();
+       
+        shapeRend.setColor(Color.WHITE);
+        shapeRend.rect(50, 250, 100, 200);
+        shapeRend.end();
     }
 
     @Override
     public void dispose() {
         batch.dispose();
         rayHandler.dispose();
+        shapeRend.dispose();
     }
 }
