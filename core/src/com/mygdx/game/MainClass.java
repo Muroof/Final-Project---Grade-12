@@ -14,6 +14,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -22,18 +24,32 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 public class MainClass extends ApplicationAdapter {
 
     SpriteBatch batch;
+    //gravity vector
+    Vector2 gravity;
+    //variables for lights
     private World world;
     private Stage stage;
     private Box2DDebugRenderer debugRenderer;
-
     private RayHandler rayHandler;
 
     @Override
     public void create() {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
-        world = new World(new Vector2(0, -3), true);
-       
+
+        gravity = new Vector2(0, 0);
+
+        world = new World(gravity, false);
+
         batch = new SpriteBatch();
+
+        //BodyDef
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyType.StaticBody;
+        bodyDef.position.set(50, 250);
+
+        //create a new body
+        Body body = world.createBody(bodyDef);
+
 
         Gdx.input.setInputProcessor(stage);
         float ratio = (float) (Gdx.graphics.getWidth()) / (float) (Gdx.graphics.getHeight());
@@ -52,7 +68,7 @@ public class MainClass extends ApplicationAdapter {
         //POINT LIGHTS
         //PointLight pl2 = new PointLight(rayHandler, 128, Color.BLUE, 10, 5, 2);
         //PointLight pl = new PointLight(rayHandler, 128, Color.RED, 10, -5, 2);
-        
+
         //DIRECTIONAL LIGHTS
         //DirectionalLight p3 = new DirectionalLight(rayHandler, 20, Color.YELLOW, 90);
 
@@ -62,10 +78,13 @@ public class MainClass extends ApplicationAdapter {
         p4.setStaticLight(true);
         // softens the light so its less harsh
         p4.setSoft(false);
-        
+
         ConeLight p5 = new ConeLight(rayHandler, 5, Color.BLUE, 5, 5, 0, 180, 45);
         p5.setStaticLight(true);
         p5.setSoft(false);
+
+        p4.setSoftnessLength(0);
+        p5.setSoftnessLength(0);
 
         //enables shadows
         rayHandler.setShadows(true);
@@ -84,7 +103,7 @@ public class MainClass extends ApplicationAdapter {
         stage.draw();
 
         debugRenderer.render(world, stage.getCamera().combined);
-        
+
         rayHandler.setCombinedMatrix(stage.getCamera().combined, 0, 0, 1, 1);
         rayHandler.updateAndRender();
     }
