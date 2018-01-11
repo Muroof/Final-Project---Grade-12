@@ -60,13 +60,13 @@ public class MainClass extends ApplicationAdapter {
         circleBody = world.createBody(circleDef);
         
         CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(3f);
+        circleShape.setRadius(5f);
         
         FixtureDef circleFixture = new FixtureDef();
         circleFixture.shape = circleShape;
         circleFixture.density = 0.04f;
         circleFixture.friction = 0.02f;
-        circleFixture.restitution = 0.08f;
+        circleFixture.restitution = 0.8f;
         
         circleBody.createFixture(circleFixture);
         
@@ -85,7 +85,14 @@ public class MainClass extends ApplicationAdapter {
 
     @Override
     public void render() {
+      Gdx.gl.glClearColor(0, 0, 0, 1);
+      Gdx.gl.glClear(0);
       
+      renderer.render(world, camera.combined);
+      
+      world.step(1/60f, 6, 2);
+      
+      logger.log();
     }
 
     @Override
