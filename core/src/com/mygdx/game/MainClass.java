@@ -13,6 +13,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -26,6 +29,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class MainClass extends ApplicationAdapter {
+
 
     OrthographicCamera camera;
     World world;
@@ -81,10 +85,12 @@ public class MainClass extends ApplicationAdapter {
         
         groundBody.createFixture(groundBox, 0.0f);
         
+
     }
 
     @Override
     public void render() {
+
       Gdx.gl.glClearColor(0, 0, 0, 1);
       Gdx.gl.glClear(0);
       
@@ -93,10 +99,17 @@ public class MainClass extends ApplicationAdapter {
       world.step(1/60f, 6, 2);
       
       logger.log();
+
     }
 
     @Override
     public void dispose() {
-     world.dispose();
+
+        world.dispose();
+
+        batch.dispose();
+        rayHandler.dispose();
+        shapeRend.dispose();
+
     }
 }
