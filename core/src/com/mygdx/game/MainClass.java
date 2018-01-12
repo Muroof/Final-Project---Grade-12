@@ -55,6 +55,20 @@ public class MainClass extends ApplicationAdapter {
         
         logger = new FPSLogger();
         
+        //CONE LIGHTS
+        handler = new RayHandler(world);
+      
+        handler.setCombinedMatrix(camera.combined);
+        //handler.setAmbientLight(Color.PURPLE);
+        handler.setShadows(true);
+        
+        ConeLight cone = new ConeLight(handler, 100, Color.RED, 100, 10, 10, 0, 45);
+//        cone.setStaticLight(false);
+        cone.setActive(true);
+        
+        //POINT LIGHT
+        
+        
         //DYNAMIC BODY
         BodyDef circleDef = new BodyDef();
         circleDef.type = BodyType.DynamicBody;
@@ -84,7 +98,7 @@ public class MainClass extends ApplicationAdapter {
         
         groundBody.createFixture(groundBox, 0.0f);
         
-        //CONE LIGHTS
+
         
     }
 
@@ -94,6 +108,7 @@ public class MainClass extends ApplicationAdapter {
       Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
       
       renderer.render(world, camera.combined);
+      handler.updateAndRender();
       
       world.step(1/60f, 6, 2);
       
@@ -103,6 +118,6 @@ public class MainClass extends ApplicationAdapter {
     @Override
     public void dispose() {
      world.dispose();
-     
+     handler.dispose();
     }
 }
