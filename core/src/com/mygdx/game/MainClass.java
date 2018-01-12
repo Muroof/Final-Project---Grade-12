@@ -14,6 +14,9 @@ import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -27,6 +30,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class MainClass extends ApplicationAdapter {
+
 
     private OrthographicCamera camera;
     private World world;
@@ -104,6 +108,7 @@ public class MainClass extends ApplicationAdapter {
 
     @Override
     public void render() {
+
       Gdx.gl.glClearColor(0, 0, 0, 1);
       Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
       
@@ -113,6 +118,7 @@ public class MainClass extends ApplicationAdapter {
       world.step(1/60f, 6, 2);
       
       logger.log();
+
     }
 
     @Override
