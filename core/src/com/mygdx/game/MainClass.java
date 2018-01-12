@@ -28,6 +28,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import java.awt.event.KeyListener;
 
 public class MainClass extends ApplicationAdapter {
 
@@ -41,6 +42,7 @@ public class MainClass extends ApplicationAdapter {
     
     private RayHandler handler;
     
+    private KeyListener keyboard;
     
     
     @Override
@@ -57,22 +59,8 @@ public class MainClass extends ApplicationAdapter {
         
         renderer = new Box2DDebugRenderer();
         
-        logger = new FPSLogger();
-        
-        //CONE LIGHTS
-        handler = new RayHandler(world);
-      
-        handler.setCombinedMatrix(camera.combined);
-        //handler.setAmbientLight(Color.PURPLE);
-        handler.setShadows(true);
-        
-        ConeLight cone = new ConeLight(handler, 100, Color.RED, 100, 10, 10, 0, 45);
-//        cone.setStaticLight(false);
-        cone.setActive(true);
-        
-        //POINT LIGHT
-        
-        
+        logger = new FPSLogger();  
+             
         //DYNAMIC BODY
         BodyDef circleDef = new BodyDef();
         circleDef.type = BodyType.DynamicBody;
@@ -102,6 +90,21 @@ public class MainClass extends ApplicationAdapter {
         
         groundBody.createFixture(groundBox, 0.0f);
         
+        //CONE LIGHTS
+        handler = new RayHandler(world);
+
+        handler.setCombinedMatrix(camera.combined);
+        //handler.setAmbientLight(Color.PURPLE);
+        handler.setShadows(true);
+
+        ConeLight cone = new ConeLight(handler, 100, Color.RED, 100, 10, 10, 0, 45);
+        cone.setActive(true);
+
+        ConeLight flashlight = new ConeLight(handler, 100, Color.YELLOW, 100, circleBody.getPosition().x, circleBody.getPosition().y, 0, 45);
+        flashlight.setActive(true);
+        flashlight.attachToBody(circleBody);
+
+        handler.setAmbientLight(Color.BLACK);
 
         
     }
