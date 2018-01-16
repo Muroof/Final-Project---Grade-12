@@ -7,6 +7,7 @@ import box2dLight.RayHandler;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
@@ -32,64 +33,85 @@ import java.awt.event.KeyListener;
 
 public class MainClass extends ApplicationAdapter {
 
-
     private OrthographicCamera camera;
     private World world;
     private float width, height;
     private FPSLogger logger;
     private Box2DDebugRenderer renderer;
     private Body circleBody;
-    
+    private Body squareBody;
     private RayHandler handler;
-    
     private KeyListener keyboard;
-    
+
     
     @Override
     public void create() {
-        
+
         width = Gdx.graphics.getWidth() / 5;
         height = Gdx.graphics.getHeight() / 5;
-        
-        camera = new OrthographicCamera (width, height);
+
+        camera = new OrthographicCamera(width, height);
         camera.position.set(width * 0.5f, height * 0.5f, 0);
         camera.update();
-        
-        world = new World(new Vector2(0,-50f), false);
-        
+
+        world = new World(new Vector2(0, -50f), false);
+
         renderer = new Box2DDebugRenderer();
-        
-        logger = new FPSLogger();  
-             
-        //DYNAMIC BODY
+
+        logger = new FPSLogger();
+
+        //DYNAMIC CIRCLE BODY
         BodyDef circleDef = new BodyDef();
         circleDef.type = BodyType.DynamicBody;
-        circleDef.position.set(50, 50);
-        
+        circleDef.position.set(63, 90);
+
         circleBody = world.createBody(circleDef);
-        
+
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(5f);
-        
+
         FixtureDef circleFixture = new FixtureDef();
         circleFixture.shape = circleShape;
         circleFixture.density = 2f;
         circleFixture.friction = 0.02f;
         circleFixture.restitution = 0.8f;
-        
+
         circleBody.createFixture(circleFixture);
+
+        //DYNAMIC SQUARE BODY
+        BodyDef squareBodyDef = new BodyDef();
+        squareBodyDef.type = BodyDef.BodyType.DynamicBody;
+
+        //set position of square
+        squareBodyDef.position.set(40, 50);
+
+        //create square body and add it to world
+        squareBody = world.createBody(squareBodyDef);
+
+        //create the sqaure shape
+        PolygonShape squareBox = new PolygonShape();
+        squareBox.setAsBox(20, 20);
+
+        //create a fixture from the shape and add it to the body
+        FixtureDef squareFixture = new FixtureDef();
         
+        
+        squareBody.createFixture(squareBox, 2.0f);
+
+
+
+
         //STATIC BODY A.K.A. THE GROUND
         BodyDef groundBodyDef = new BodyDef();
-        groundBodyDef.position.set(0,3);
-        
+        groundBodyDef.position.set(0, 3);
+
         Body groundBody = world.createBody(groundBodyDef);
-        
+
         PolygonShape groundBox = new PolygonShape();
         groundBox.setAsBox(camera.viewportWidth * 2, 3.0f);
-        
+
         groundBody.createFixture(groundBox, 0.0f);
-        
+
         //CONE LIGHTS
         handler = new RayHandler(world);
 
@@ -106,27 +128,37 @@ public class MainClass extends ApplicationAdapter {
 
         handler.setAmbientLight(Color.BLACK);
 
+
+    }
+
+  
+    void update(float dt){
+        //try move box
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            circleBody.applyLinearImpulse(new Vector2(15,0), circleBody.getWorldCenter(), true);
+        }
+        
+    }
+    
+    @Override
+    public void render() {
+        
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
+
+        renderer.render(world, camera.combined);
+        handler.updateAndRender();
+
+        world.step(1 / 60f, 6, 2);
+
+        logger.log();
+
         
     }
 
     @Override
-    public void render() {
-
-      Gdx.gl.glClearColor(0, 0, 0, 1);
-      Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
-      
-      renderer.render(world, camera.combined);
-      handler.updateAndRender();
-      
-      world.step(1/60f, 6, 2);
-      
-      logger.log();
-
-    }
-
-    @Override
     public void dispose() {
-     world.dispose();
-     handler.dispose();
+        world.dispose();
+        handler.dispose();
     }
 }
