@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mygdx.game;
+package main;
 
 import com.badlogic.gdx.physics.box2d.World;
 
