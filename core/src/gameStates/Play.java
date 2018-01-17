@@ -13,6 +13,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -31,10 +32,11 @@ import handlers.GameStateManager;
 public class Play extends GameState {
     
     private World world;
-    // renders bofies
+    // renders bodies
     private Box2DDebugRenderer b2dr;
     private Body playerBody;
     private RayHandler handle;
+    private ConeLight flashlight;
     // constructor
     public Play(GameStateManager gsm){
         super(gsm);
@@ -49,7 +51,7 @@ public class Play extends GameState {
    
         // static body - doesnt move, unaffected by forces
         // kinematic body (moving platform!!!)- dont get affected by forces, but velocitys can bes set
-// dynamic body - always affected by force
+        // dynamic body - always affected by force
          // creating body
         // have to tell world body is created using body definition
         Body body = world.createBody(bdef);
@@ -93,11 +95,6 @@ public class Play extends GameState {
         
         
         
-        
-        
-        
-        
-        
         // crete 2 random fallin cirlces on each side (Kinematic BODIES)
         // set body poistion
         bdef.type = BodyType.DynamicBody;
@@ -136,10 +133,10 @@ public class Play extends GameState {
          // shadows
          handle.setShadows(true);
          // apply a light to the player
-        ConeLight flashlight = new ConeLight(handle, 100, Color.BLUE, 500, playerBody.getPosition().x, playerBody.getPosition().y, 0, 45);
+        flashlight = new ConeLight(handle, 100, Color.BLUE, 500, playerBody.getPosition().x, playerBody.getPosition().y, 0, 45);
         flashlight.setActive(true);
         
-  flashlight.attachToBody(playerBody);
+        flashlight.attachToBody(playerBody);
         
     }
     
@@ -148,11 +145,15 @@ public class Play extends GameState {
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
             // apply force to centre parametrs (xforce, yforce,
             playerBody.applyForceToCenter(1000, 0, true);
+            playerBody.setTransform(playerBody.getPosition().x, playerBody.getPosition().y, MathUtils.degreesToRadians*180);
         }
         // if left is pressed
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
             // apply force to centre parametrs (xforce, yforce,
+            // apply force to centre parametrs (xforce, yforce,
             playerBody.applyForceToCenter(-1000, 0, true);
+            playerBody.setTransform(playerBody.getPosition().x, playerBody.getPosition().y, MathUtils.degreesToRadians*180);
+                        
         }
         // if up is pressed
         if(Gdx.input.isKeyPressed(Input.Keys.UP)){
@@ -162,12 +163,16 @@ public class Play extends GameState {
         
         
     }
+    
      public void update(float dt){
          handleInput();
-// 2nd parameter is accuracy of collision (velocity iteration) (six is good)
+         flashlight.update();
+         // 2nd parameter is accuracy of collision (velocity iteration) (six is good)
          // 3rd parameter accuracy of setting body position after colliosion (2 or 3) (position iteration)
          world.step(dt, 6, 2);
      }
+     
+     
      public void render(){
          // clear screen
          Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -179,7 +184,7 @@ public class Play extends GameState {
           b2dr.render(world, cam.combined);
      }
      public void dispose(){
-                   
-
+        handle.dispose();
+        world.dispose();
      }
 }
