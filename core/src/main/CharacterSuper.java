@@ -14,7 +14,7 @@ import com.badlogic.gdx.physics.box2d.World;
  *
  * @author awadb3223
  */
-public class CharacterSuper {
+public abstract class CharacterSuper {
 
     //instance variables
     private World world;
@@ -25,16 +25,17 @@ public class CharacterSuper {
     private float dx;
     private float dy;
 
-    public CharacterSuper(float x, float y) {
+    public CharacterSuper(float x, float y, World world, Body squareBody) {
         this.world = world;
         this.x = x;
         this.y = y;
-
+        this.squareBody = squareBody;
         this.dx = dx;
         this.dy = dy;
     }
-
-    public void create() {
+    
+    
+    public void createBody(){
         //DYNAMIC SQUARE BODY
         BodyDef squareBodyDef = new BodyDef();
         squareBodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -47,11 +48,18 @@ public class CharacterSuper {
 
         //create the sqaure shape
         PolygonShape squareBox = new PolygonShape();
-        squareBox.setAsBox(20, 20);
+        squareBox.setAsBox(20, 40);
 
         //create a fixture from the shape and add it to the body
         FixtureDef squareFixture = new FixtureDef();
 
         squareBody.createFixture(squareBox, 2.0f);
+
+        squareBody.setActive(true);
     }
+    
+    public abstract void light();
+  
 }
+
+    
