@@ -12,87 +12,145 @@ import com.badlogic.gdx.physics.box2d.World;
 import static handlers.box2dvairables.PPM;
 
 /**
- *
- * @author awadb3223
+ * @author Beshoy
+ * @author Kiran
+ * @author Maloof
  */
 public abstract class CharacterSuper {
 
-    //instance variables
+    // instance variables
     private World world;
-    private Body squareBody;
-    private BodyDef bodydDef;
-    private PolygonShape shape;
-    private FixtureDef fixtureDef;
-    private float x;
-    private float y;
-    // wodth and heights of the enemies!
+    private Body characterBody;
+    private BodyDef characterBodyDef;
+    private PolygonShape characterShape;
+    private FixtureDef characterFixtureDef;
+    private float characterX;
+    private float characterY;
+
+    // instace variables for the width and height of a character
     private float xWidth;
     private float yHeight;
-    //displacement of x and y
-   
-    public CharacterSuper(float x, float y,float xWidth, float yHeight, World world, Body squareBody, BodyDef bodyDef, PolygonShape shape, FixtureDef fixtureDef) {
-        this.world = world;
-        this.x = x/PPM;
-        this.y = y/PPM;
-        this.xWidth = xWidth/PPM;
-                this.yHeight = yHeight/PPM;
 
-        
-        
-        
-        bodyDef = new BodyDef();
-bodyDef.type = BodyDef.BodyType.DynamicBody;
-        //set position of square
-        bodyDef.position.set(this.x, this.y);
-        
-        squareBody = world.createBody(bodyDef);
-//create the sqaure shape
-        shape = new PolygonShape();
-        fixtureDef = new FixtureDef();
-        fixtureDef.shape = shape;
-        fixtureDef.density = 0.8f;
-        fixtureDef.friction = 5f;
-        shape.setAsBox(this.xWidth, this.yHeight);
-        
-        squareBody.createFixture(fixtureDef);
-        this.squareBody = squareBody;
-        this.bodydDef = bodyDef;
-        this.shape = shape;
-        this.fixtureDef = fixtureDef;
+    /**
+     * constructor for Character
+     *
+     * @param x
+     * @param y
+     * @param xWidth
+     * @param yHeight
+     * @param world
+     * @param characterBody
+     * @param characterBodyDef
+     * @param characterShape
+     * @param characterFixtureDef
+     */
+    public CharacterSuper(float x, float y, float xWidth, float yHeight, World world, Body characterBody, BodyDef characterBodyDef, PolygonShape characterShape, FixtureDef characterFixtureDef) {
+        // instance variables are set to the varaibles found in the parameters required
+        this.world = world;
+        this.characterX = x / PPM;
+        this.characterY = y / PPM;
+        this.xWidth = xWidth / PPM;
+        this.yHeight = yHeight / PPM;
+
+        // creates a bodyDef for a character
+        characterBodyDef = new BodyDef();
+        // sets this bodyDef to a dynamic body, as forces will act on the player
+        characterBodyDef.type = BodyDef.BodyType.DynamicBody;
+        // set position of the bodyDef
+        characterBodyDef.position.set(this.characterX, this.characterY);
+
+        // create a body, and pass in the characterBodyDef
+        characterBody = world.createBody(characterBodyDef);
+
+        // create the sqaure polygon
+        characterShape = new PolygonShape();
+        // create a FixtureDef for the character
+        characterFixtureDef = new FixtureDef();
+        // make the characterFixtureDef's shape equal to the shape we created earlier: characterShape
+        characterFixtureDef.shape = characterShape;
+        // set the characterFixtureDef's density and friction
+        characterFixtureDef.density = 0.8f;
+        characterFixtureDef.friction = 5f;
+        // set the charaterShape as a box
+        characterShape.setAsBox(this.xWidth, this.yHeight);
+
+        // pass in the characterFixtureDef as the fixture for our characterBody
+        characterBody.createFixture(characterFixtureDef);
+
+        // make instance variables equal the parameters
+        this.characterBody = characterBody;
+        this.characterBodyDef = characterBodyDef;
+        this.characterShape = characterShape;
+        this.characterFixtureDef = characterFixtureDef;
     }
-    
-    public Body getBody(){
-        return this.squareBody;
+
+    /**
+     *
+     * @return
+     */
+    public Body getBody() {
+        return this.characterBody;
     }
-    
-    
-    public float getXPosition(){
-        return this.x;
+
+    /**
+     *
+     * @return
+     */
+    public float getXPosition() {
+        return this.characterX;
     }
-    
-    public void updateXPosition(float x){
-        this.x = x;
+
+    /**
+     *
+     * @param x
+     */
+    public void updateXPosition(float x) {
+        this.characterX = x;
     }
-    
-    public void updateYPosition(float y){
-        this.y = y;
+
+    /**
+     *
+     * @param y
+     */
+    public void updateYPosition(float y) {
+        this.characterY = y;
     }
-    public float getYPosition(){
-        return this.y;
+
+    /**
+     *
+     * @return
+     */
+    public float getYPosition() {
+        return this.characterY;
     }
-    public float getXWidth(){
+
+    /**
+     *
+     * @return
+     */
+    public float getXWidth() {
         return this.xWidth;
     }
-    public float getYHeight(){
+
+    /**
+     *
+     * @return
+     */
+    public float getYHeight() {
         return this.yHeight;
     }
-    public FixtureDef getFixtureDef(){
-        return this.fixtureDef;
+
+    /**
+     *
+     * @return
+     */
+    public FixtureDef getFixtureDef() {
+        return this.characterFixtureDef;
     }
-    
+
+    /**
+     *
+     */
     public abstract void handleMovement();
 
-    
-    
-    
 }

@@ -1,5 +1,10 @@
 package main;
 
+/**
+ * @author Beshoy
+ * @author Kiran
+ * @author Maloof
+ */
 import box2dLight.ConeLight;
 import box2dLight.DirectionalLight;
 import box2dLight.PointLight;
@@ -45,63 +50,74 @@ public class MainClass extends ApplicationAdapter {
     private KeyListener keyboard;
 
     // STUFF I ADDED FROM TUTORIAL
-    public static final float STEP = 1/60f;
+    public static final float STEP = 1 / 60f;
     // keep track of how much time has gone by
     private float accum;
-    
-    
-    
-    
-    
+
     private SpriteBatch sb;
     private OrthographicCamera cam;
     private OrthographicCamera hudCam;
     private GameStateManager gsm;
-   
-    
+
+    /**
+     *
+     */
     @Override
     public void create() {
-// STUFF I ADDED
+        // STUFF I ADDED
+        // Who's I? - Maloof
         // initialize stuff
         sb = new SpriteBatch();
         cam = new OrthographicCamera();
-       
+
         // FIX BY LINKING IT TO A VARIABLE WHICH HAS SCREEN SIZE
         cam.setToOrtho(false, 1280, 720);
         hudCam = new OrthographicCamera();
         // FIX BY LINKING IT TO A VARIABLE WHICH HAS SCREEN SIZE
         hudCam.setToOrtho(false, 1280, 720);
         gsm = new GameStateManager(this);
-        
-      
+
     }
 
+    /**
+     *
+     */
     @Override
     public void render() {
-
         // accumulate time gone by
         accum += Gdx.graphics.getDeltaTime();
         // only render if enough time has passedd with a step
-        while (accum>= STEP) {
+        while (accum >= STEP) {
             accum -= STEP;
             gsm.update(STEP);
             gsm.render();
         }
-        
+
     }
- public SpriteBatch getSpriteBatch(){
+
+    /**
+     *
+     * @return
+     */
+    public SpriteBatch getSpriteBatch() {
         return sb;
     }
-    
-    public OrthographicCamera getCamera(){
+
+    /**
+     *
+     * @return
+     */
+    public OrthographicCamera getCamera() {
         return cam;
-       
+
     }
-    
-    public OrthographicCamera getHUDCamera(){
+
+    /**
+     *
+     * @return
+     */
+    public OrthographicCamera getHUDCamera() {
         return hudCam;
     }
-    
-   
-    
+
 }
