@@ -29,9 +29,9 @@ import handlers.GameStateManager;
 import main.MainClass;
 
 /**
- *
+ * @author Beshoy
  * @author Kiran
- * 
+ * @author Maloof
  */
 public class Play extends GameState {
     
