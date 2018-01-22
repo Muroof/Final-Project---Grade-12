@@ -160,12 +160,12 @@ circleFixture.density = 1f;
         // 1f means bounces to same spot
         b2dcamscale = new OrthographicCamera();
         // MAKE MAIN CLASS V_WIDTH AND HEIGHT LATER!!!!!
-        b2dcamscale.setToOrtho(false, 1280/PPM,720/PPM);
+        cam.setToOrtho(false, 1280/PPM,720/PPM);
         // create the fixture around the player body
         playerBody.createFixture(fdef);
         // WORK ON IMPLEMRNTING LIGHT IN OTHER CLASSES MORE SPECIFICLLY LINK RAY HANDLER BETWEEN GAME STATE MANAGER, GAME STATE, AND PLAY
          handle = new RayHandler(world);
-         handle.setCombinedMatrix(b2dcamscale.combined);
+         handle.setCombinedMatrix(cam.combined);
          // shadows
          handle.setShadows(true);
 
@@ -187,8 +187,7 @@ circleFixture.density = 1f;
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
             // apply force to centre parametrs (xforce, yforce,
             playerBody.applyForceToCenter(20, 10, true);
-                    playerBody.setTransform(playerBody.getPosition().x/PPM, playerBody.getPosition().y/PPM, 1/9);
-
+                    
         }
         // if left is pressed
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
@@ -221,7 +220,7 @@ circleFixture.density = 1f;
           // render light
           handle.updateAndRender();
 // draw box 2d world
-          b2dr.render(world, b2dcamscale.combined);
+          b2dr.render(world, cam.combined);
      }
      public void dispose(){
                    
