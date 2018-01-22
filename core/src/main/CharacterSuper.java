@@ -9,49 +9,89 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import static handlers.box2dvairables.PPM;
 
 /**
  *
  * @author awadb3223
  */
-public class CharacterSuper {
+public abstract class CharacterSuper {
 
     //instance variables
     private World world;
     private Body squareBody;
+    private BodyDef bodydDef;
+    private PolygonShape shape;
+    private FixtureDef fixtureDef;
     private float x;
     private float y;
+    // wodth and heights of the enemies!
+    private float xWidth;
+    private float yHeight;
     //displacement of x and y
-    private float dx;
-    private float dy;
-
-    public CharacterSuper(float x, float y) {
+   
+    public CharacterSuper(float x, float y,float xWidth, float yHeight, World world, Body squareBody, BodyDef bodyDef, PolygonShape shape, FixtureDef fixtureDef) {
         this.world = world;
-        this.x = x;
-        this.y = y;
+        this.x = x/PPM;
+        this.y = y/PPM;
+        this.xWidth = xWidth/PPM;
+                this.yHeight = yHeight/PPM;
 
-        this.dx = dx;
-        this.dy = dy;
-    }
-
-    public void create() {
-        //DYNAMIC SQUARE BODY
-        BodyDef squareBodyDef = new BodyDef();
-        squareBodyDef.type = BodyDef.BodyType.DynamicBody;
-
+        
+        
+        
+        bodyDef = new BodyDef();
+bodyDef.type = BodyDef.BodyType.DynamicBody;
         //set position of square
-        squareBodyDef.position.set(40, 50);
-
-        //create square body and add it to world
-        squareBody = world.createBody(squareBodyDef);
-
-        //create the sqaure shape
-        PolygonShape squareBox = new PolygonShape();
-        squareBox.setAsBox(20, 20);
-
-        //create a fixture from the shape and add it to the body
-        FixtureDef squareFixture = new FixtureDef();
-
-        squareBody.createFixture(squareBox, 2.0f);
+        bodyDef.position.set(this.x, this.y);
+        
+        squareBody = world.createBody(bodyDef);
+//create the sqaure shape
+        shape = new PolygonShape();
+        fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        fixtureDef.density = 0.8f;
+        shape.setAsBox(this.xWidth, this.yHeight);
+        
+        squareBody.createFixture(fixtureDef);
+        this.squareBody = squareBody;
+        this.bodydDef = bodyDef;
+        this.shape = shape;
+        this.fixtureDef = fixtureDef;
     }
+    
+    public Body getBody(){
+        return this.squareBody;
+    }
+    
+    
+    public float getXPosition(){
+        return this.x;
+    }
+    
+    public void updateXPosition(float x){
+        this.x = x;
+    }
+    
+    public void updateYPosition(float y){
+        this.y = y;
+    }
+    public float getYPosition(){
+        return this.y;
+    }
+    public float getXWidth(){
+        return this.xWidth;
+    }
+    public float getYHeight(){
+        return this.yHeight;
+    }
+    public FixtureDef getFixtureDef(){
+        return this.fixtureDef;
+    }
+    
+    public abstract void handleMovement();
+
+    
+    
+    
 }
