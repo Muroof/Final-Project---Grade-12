@@ -17,23 +17,22 @@ import main.MainClass;
  */
 public abstract class GameState {
     
-    protected GameStateManager gsm;
-    protected MainClass game;
-     protected SpriteBatch sb;
-     protected OrthographicCamera cam;
-     protected OrthographicCamera hudCam;
-     protected RayHandler rayHandler;
-     protected GameState(GameStateManager gsm){
+    private GameStateManager gsm;
+    private  MainClass game;
+     private  SpriteBatch sb;
+     protected  OrthographicCamera cam;
+     
+      
+        
+        public GameState(GameStateManager gsm){
          this.gsm = gsm;
          game = gsm.game();
          sb = game.getSpriteBatch();
          cam = game.getCamera();
-         hudCam = game.getHUDCamera();
-         rayHandler = game.getRayHandler();
-         rayHandler.setShadows(true);
+         
+        
      }
      
-     public abstract void handleInput();
      public abstract void update(float dt);
      public abstract void render();
      public abstract void dispose();

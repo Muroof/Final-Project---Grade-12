@@ -5,6 +5,7 @@
  */
 package gameStates;
 // imports ppm variable
+import main.CharacterSuper;
 import box2dLight.ConeLight;
 import box2dLight.RayHandler;
 import static handlers.box2dvairables.PPM;
@@ -26,7 +27,9 @@ import com.badlogic.gdx.physics.box2d.JointDef.JointType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import handlers.GameStateManager;
+import main.EnemySub;
 import main.MainClass;
+import main.PlayerSub;
 
 /**
  *
@@ -39,8 +42,16 @@ public class Play extends GameState {
     private Box2DDebugRenderer b2dr;
     private Body playerBody;
     private RayHandler handle;
-    private OrthographicCamera b2dcamscale;
     private ConeLight flashlight;
+    
+    
+    // my shii
+    private Body squareBody;
+    private BodyDef bodyDef;
+    private PolygonShape shapes;
+    private FixtureDef fixtureDef;
+    private PlayerSub player;
+private EnemySub enemy;
     
     // constructor
     public Play(GameStateManager gsm){
@@ -49,7 +60,8 @@ public class Play extends GameState {
         // VECTOR 2 IS GRAVITY (x is gravity ;eft and right), true means body is asleep
         world = new World(new Vector2(0,-1020f), true);
         b2dr = new Box2DDebugRenderer();
-        
+        // MAKE MAIN CLASS V_WIDTH AND HEIGHT LATER!!!!!
+       cam.setToOrtho(false, 1280/PPM,720/PPM);
         
         
         
@@ -142,32 +154,16 @@ circleFixture.density = 1f;
       circleFixture.friction = 0.02f;
    circleFixture.restitution = 0.8f;
         circle.createFixture(circleFixture);
-        
-        
-        
-        // create falling box (PLAYER)
-        // can reuse body definitions
-        bdef.position.set(620/PPM,500/PPM);
-        // make dynmic
-        bdef.type = BodyType.DynamicBody;
-        playerBody = world.createBody(bdef);   
-        // make it a box
-        shape.setAsBox(15/PPM, 15/PPM);
-        // set the defintion to the shape
-        fdef.shape = shape;
-        fdef.density = 0.8f;
-        fdef.friction=0.8f;
-        // 1f means bounces to same spot
-        b2dcamscale = new OrthographicCamera();
-        // MAKE MAIN CLASS V_WIDTH AND HEIGHT LATER!!!!!
-        cam.setToOrtho(false, 1280/PPM,720/PPM);
-        // create the fixture around the player body
-        playerBody.createFixture(fdef);
-        // WORK ON IMPLEMRNTING LIGHT IN OTHER CLASSES MORE SPECIFICLLY LINK RAY HANDLER BETWEEN GAME STATE MANAGER, GAME STATE, AND PLAY
-         handle = new RayHandler(world);
-         handle.setCombinedMatrix(cam.combined);
-         // shadows
-         handle.setShadows(true);
+         player = new PlayerSub(620,500, 15,15,world, squareBody, bodyDef, shapes,  fixtureDef);
+enemy = new EnemySub(200,500, 15,15,world, squareBody, bodyDef, shapes,  fixtureDef);
+  
+//        
+
+//        // WORK ON IMPLEMRNTING LIGHT IN OTHER CLASSES MORE SPECIFICLLY LINK RAY HANDLER BETWEEN GAME STATE MANAGER, GAME STATE, AND PLAY
+     handle = new RayHandler(world);
+       handle.setCombinedMatrix(cam.combined);
+//         // shadows
+       handle.setShadows(true);
 
          ConeLight circleLight = new ConeLight(handle, 100, Color.CORAL, 500, circle.getPosition().x/PPM, circle.getPosition().y/PPM, 0, 45);
          circleLight.setActive(true);
@@ -175,43 +171,34 @@ circleFixture.density = 1f;
          
          
          // apply a light to the player
-        flashlight = new ConeLight(handle, 100, Color.LIME, 500, playerBody.getPosition().x/PPM, playerBody.getPosition().y/PPM, -136, 45);
+        flashlight = new ConeLight(handle, 100, Color.LIME, 500, player.getXPosition(), player.getYPosition(), -136, 45);
         flashlight.setActive(true);
         
-  flashlight.attachToBody(playerBody);
+  flashlight.attachToBody(player.getBody());
         
+  
     }
     
-    public void handleInput(){
-        // if right is pressed
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-            // apply force to centre parametrs (xforce, yforce,
-            playerBody.applyForceToCenter(20, 10, true);
-                    
-        }
-        // if left is pressed
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            // apply force to centre parametrs (xforce, yforce,
-            playerBody.applyForceToCenter(-20, 10, true);
-          
-            
-        }
-        // if up is pressed
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-            // apply force to centre parametrs (xforce, yforce,
-            playerBody.applyForceToCenter(0, 100, true);
-        }
-        
-        
-        
-        
-    }
+    
+    
+    @Override
      public void update(float dt){
-         handleInput();
+         // LIGHT DETECTION
+         player.handleMovement();
+         enemy.handleMovement();
+         //update x posiitons
+         player.updateXPosition(player.getBody().getPosition().x);
+                  player.updateYPosition(player.getBody().getPosition().y);
+         enemy.updateXPosition(enemy.getBody().getPosition().x);
+         enemy.updateYPosition(enemy.getBody().getPosition().y);
+
 // 2nd parameter is accuracy of collision (velocity iteration) (six is good)
          // 3rd parameter accuracy of setting body position after colliosion (2 or 3) (position iteration)
-         world.step(dt, 6, 2);
+         world.step(dt, 7, 3);
+         System.out.println(player.getXPosition());
      }
+     
+    @Override
      public void render(){
          // clear screen
          Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -223,7 +210,7 @@ circleFixture.density = 1f;
           b2dr.render(world, cam.combined);
      }
      public void dispose(){
-                   
+        world.dispose();
 
      }
 }
