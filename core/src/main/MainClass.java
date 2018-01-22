@@ -56,7 +56,6 @@ public class MainClass extends ApplicationAdapter {
     private SpriteBatch sb;
     private OrthographicCamera cam;
     private OrthographicCamera hudCam;
-    private RayHandler rayHandler;
     private GameStateManager gsm;
    
     
@@ -66,9 +65,7 @@ public class MainClass extends ApplicationAdapter {
         // initialize stuff
         sb = new SpriteBatch();
         cam = new OrthographicCamera();
-        rayHandler = new RayHandler(world);
-        // set shadows!!!
-        rayHandler.setShadows(true);
+       
         // FIX BY LINKING IT TO A VARIABLE WHICH HAS SCREEN SIZE
         cam.setToOrtho(false, 1280, 720);
         hudCam = new OrthographicCamera();
@@ -105,9 +102,6 @@ public class MainClass extends ApplicationAdapter {
         return hudCam;
     }
     
-    // get handler
-    public RayHandler getRayHandler(){
-        return rayHandler;
-    }
+   
     
 }

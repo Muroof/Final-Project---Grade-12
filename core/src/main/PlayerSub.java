@@ -32,21 +32,21 @@ public class PlayerSub extends CharacterSuper {
         // if right is pressed
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
             // apply force to centre parametrs (xforce, yforce,
-            this.getBody().applyForceToCenter(20, 10, true);
+            this.getBody().applyForceToCenter(2, 0, true);
             
             
         }
         // if left is pressed
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
             // apply force to centre parametrs (xforce, yforce,
-            this.getBody().applyForceToCenter(-20, 10, true);
+            this.getBody().applyForceToCenter(-2, 0, true);
           
             
         }
         // if up is pressed
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)){
+        if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){
             // apply force to centre parametrs (xforce, yforce,
-            this.getBody().applyForceToCenter(0, 75, true);
+            this.getBody().applyForceToCenter(0, 20, true);
         }
     }
 
