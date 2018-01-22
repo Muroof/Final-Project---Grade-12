@@ -5,6 +5,7 @@
  */
 package gameStates;
 // imports ppm variable
+
 import main.CharacterSuper;
 import box2dLight.ConeLight;
 import box2dLight.RayHandler;
@@ -62,18 +63,13 @@ public class Play extends GameState {
         // MAKE MAIN CLASS V_WIDTH AND HEIGHT LATER!!!!!
         cam.setToOrtho(false, 1280 / PPM, 720 / PPM);
 
-
-
         JointDef ff = new JointDef();
         ff.type = JointType.RevoluteJoint;
-
 
         // creating a platform
         BodyDef bdef = new BodyDef();
         bdef.position.set(600 / PPM, 200 / PPM);
         bdef.type = BodyType.StaticBody;
-
-
 
         // static body - doesnt move, unaffected by forces
         // kinematic body (moving platform!!!)- dont get affected by forces, but velocitys can bes set
@@ -83,7 +79,6 @@ public class Play extends GameState {
         Body body = world.createBody(bdef);
         // create shape
         PolygonShape shape = new PolygonShape();
-
 
         // set the shape to be a box
         shape.setAsBox(80 / PPM, 10 / PPM);
@@ -110,7 +105,6 @@ public class Play extends GameState {
         fdef.friction = 0.1f;
         floor.createFixture(fdef);
 
-
         // wall on the right
         bdef.type = BodyType.StaticBody;
         bdef.position.set(1200 / PPM, 1400 / PPM);
@@ -119,14 +113,6 @@ public class Play extends GameState {
         wallRight.setAsBox(10 / PPM, 1400 / PPM);
         fdef.shape = wallRight;
         rightWall.createFixture(fdef);
-
-
-
-
-
-
-
-
 
         // crete 2 random fallin cirlces on each side (Kinematic BODIES)
         // set body poistion
@@ -141,8 +127,6 @@ public class Play extends GameState {
         // set as circle
         Circle.setRadius(2f);
 
-
-
         FixtureDef circleFixture = new FixtureDef();
         circleFixture.shape = Circle;
         circleFixture.density = 1f;
@@ -155,20 +139,17 @@ public class Play extends GameState {
         // WORK ON IMPLEMRNTING LIGHT IN OTHER CLASSES MORE SPECIFICLLY LINK RAY HANDLER BETWEEN GAME STATE MANAGER, GAME STATE, AND PLAY
         handle = new RayHandler(world);
         handle.setCombinedMatrix(cam.combined);
-        
-        // shadows
 
+        // shadows
         ConeLight circleLight = new ConeLight(handle, 100, Color.CORAL, 500, circle.getPosition().x / PPM, circle.getPosition().y / PPM, 0, 45);
         circleLight.setActive(true);
         circleLight.attachToBody(circle);
-
 
         // apply a light to the player
         flashlight = new ConeLight(handle, 100, Color.LIME, 500, player.getXPosition(), player.getYPosition(), -136, 45);
         flashlight.setActive(true);
 
         flashlight.attachToBody(player.getBody());
-
 
     }
 
@@ -195,14 +176,16 @@ public class Play extends GameState {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
 
-        // render light
-        handle.updateAndRender();
         // draw box 2d world
         b2dr.render(world, cam.combined);
+        // render light
+        handle.updateAndRender();
+
     }
 
     public void dispose() {
         world.dispose();
+        handle.dispose();
 
     }
 }

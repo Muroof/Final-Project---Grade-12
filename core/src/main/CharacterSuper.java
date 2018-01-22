@@ -51,6 +51,7 @@ bodyDef.type = BodyDef.BodyType.DynamicBody;
         fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 0.8f;
+        fixtureDef.friction = 5f;
         shape.setAsBox(this.xWidth, this.yHeight);
         
         squareBody.createFixture(fixtureDef);
