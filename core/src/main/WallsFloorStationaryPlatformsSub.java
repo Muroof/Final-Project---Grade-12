@@ -6,9 +6,11 @@
 package main;
 
 /**
- *
+ * @author Beshoy
  * @author Kiran
+ * @author Maloof
  */
 public class WallsFloorStationaryPlatformsSub {
-    
+    // this class seems oddly specific - Maloof
+
 }

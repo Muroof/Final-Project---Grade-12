@@ -13,38 +13,57 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 /**
- *
- * @author awadb3223
+ * @author Beshoy
+ * @author Kiran
+ * @author Maloof
  */
 public class PlayerSub extends CharacterSuper {
 
-    public PlayerSub(float x, float y, float xWidth, float yHeight, World world, Body squareBody, BodyDef bodyDef, PolygonShape shape, FixtureDef fixtureDef) {
-        super(x, y, xWidth, yHeight, world, squareBody, bodyDef, shape, fixtureDef);
+    /**
+     * constructor for Player
+     *
+     * @param playerX
+     * @param playerY
+     * @param xWidth
+     * @param yHeight
+     * @param world
+     * @param playerBody
+     * @param playerBodyDef
+     * @param playerShape
+     * @param playerFixtureDef
+     */
+    public PlayerSub(float playerX, float playerY, float xWidth, float yHeight, World world, Body playerBody, BodyDef playerBodyDef, PolygonShape playerShape, FixtureDef playerFixtureDef) {
+        // calls on super for all parameters required
+        super(playerX, playerY, xWidth, yHeight, world, playerBody, playerBodyDef, playerShape, playerFixtureDef);
 
     }
 
+    /**
+     *
+     * @param enemy
+     */
     public void hasBeenSeenByLight(EnemySub enemy) {
 
     }
-    
+
     @Override
-    public void handleMovement(){
-        // if right is pressed
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+    public void handleMovement() {
+        // Let's not keep changing the movement back to the arrow keys, as it is standard to use WASD to move in computer games, thanks - Maloof
+
+        // if 'D' key is pressed
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             // apply force to centre parametrs (xforce, yforce,
             this.getBody().applyForceToCenter(2, 0, true);
-            
-            
+
         }
-        // if left is pressed
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+        // if 'A' key is pressed
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             // apply force to centre parametrs (xforce, yforce,
             this.getBody().applyForceToCenter(-2, 0, true);
-          
-            
+
         }
-        // if up is pressed
-        if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){
+        // if 'W' key is pressed
+        if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
             // apply force to centre parametrs (xforce, yforce,
             this.getBody().applyForceToCenter(0, 20, true);
         }
