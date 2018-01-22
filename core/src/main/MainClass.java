@@ -123,22 +123,21 @@ public class MainClass extends ApplicationAdapter {
 //
 //        logger = new FPSLogger();
 //
-//        //DYNAMIC CIRCLE BODY
+        //DYNAMIC CIRCLE BODY
 //        BodyDef circleDef = new BodyDef();
 //        circleDef.type = BodyType.DynamicBody;
 //        circleDef.position.set(63, 90);
 //
-//        circleBody = world.createBody(circleDef);
+//        //circleBody = world.createBody(circleDef);
 //
 //        CircleShape circleShape = new CircleShape();
 //        circleShape.setRadius(5f);
-//
 //        FixtureDef circleFixture = new FixtureDef();
 //        circleFixture.shape = circleShape;
 //        circleFixture.density = 2f;
 //        circleFixture.friction = 0.02f;
 //        circleFixture.restitution = 0.8f;
-//
+
 //        circleBody.createFixture(circleFixture);
 //
 //        //DYNAMIC SQUARE BODY
