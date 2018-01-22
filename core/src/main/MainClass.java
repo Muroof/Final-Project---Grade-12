@@ -1,5 +1,11 @@
 package main;
 
+/**
+ * @author Beshoy
+ * @author Kiran  
+ * @author Maloof
+ */
+
 import box2dLight.ConeLight;
 import box2dLight.DirectionalLight;
 import box2dLight.PointLight;
@@ -45,41 +51,38 @@ public class MainClass extends ApplicationAdapter {
     private KeyListener keyboard;
 
     // STUFF I ADDED FROM TUTORIAL
-    public static final float STEP = 1/60f;
+    public static final float STEP = 1 / 60f;
     // keep track of how much time has gone by
     private float accum;
-    
-    
-    
-    
-    
+
     private SpriteBatch sb;
     private OrthographicCamera cam;
     private OrthographicCamera hudCam;
     private RayHandler rayHandler;
-    
-    public SpriteBatch getSpriteBatch(){
+
+    public SpriteBatch getSpriteBatch() {
         return sb;
     }
-    
-    public OrthographicCamera getCamera(){
+
+    public OrthographicCamera getCamera() {
         return cam;
-       
+
     }
-    
-    public OrthographicCamera getHUDCamera(){
+
+    public OrthographicCamera getHUDCamera() {
         return hudCam;
     }
-    
+
     // get handler
-    public RayHandler getRayHandler(){
+    public RayHandler getRayHandler() {
         return rayHandler;
     }
-    
+
     private GameStateManager gsm;
+
     @Override
     public void create() {
-// STUFF I ADDED
+        // STUFF I ADDED
         // initialize stuff
         sb = new SpriteBatch();
         cam = new OrthographicCamera();
@@ -92,24 +95,7 @@ public class MainClass extends ApplicationAdapter {
         // FIX BY LINKING IT TO A VARIABLE WHICH HAS SCREEN SIZE
         hudCam.setToOrtho(false, 1280, 720);
         gsm = new GameStateManager(this);
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
 //        width = Gdx.graphics.getWidth() / 5;
 //        height = Gdx.graphics.getHeight() / 5;
 //
@@ -189,16 +175,12 @@ public class MainClass extends ApplicationAdapter {
 //        flashlight.attachToBody(circleBody);
 //
 //        handler.setAmbientLight(Color.BLACK);
+    }
 
+    void update(float dt) {
 
     }
 
-  
-    void update(float dt){
-        
-        
-    }
-    
     @Override
     public void render() {
 //        
@@ -218,12 +200,12 @@ public class MainClass extends ApplicationAdapter {
         // accumulate time gone by
         accum += Gdx.graphics.getDeltaTime();
         // only render if enough time has passedd with a step
-        while (accum>= STEP) {
+        while (accum >= STEP) {
             accum -= STEP;
             gsm.update(STEP);
             gsm.render();
         }
-        
+
     }
 
     @Override
