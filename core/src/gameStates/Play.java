@@ -194,7 +194,7 @@ circleFixture.density = 1f;
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
             // apply force to centre parametrs (xforce, yforce,
             playerBody.applyForceToCenter(-20, 10, true);
-            flashlight.setDirection(180);
+          
             
         }
         // if up is pressed
