@@ -4,12 +4,16 @@
  */
 package main;
 
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import static handlers.box2dvairables.PPM;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 /**
  * @author Beshoy
@@ -70,7 +74,8 @@ public abstract class CharacterSuper {
         characterFixtureDef.shape = characterShape;
         // set the characterFixtureDef's density and friction
         characterFixtureDef.density = 0.8f;
-        characterFixtureDef.friction = 5f;
+        characterFixtureDef.friction = 0f;
+
         // set the charaterShape as a box
         characterShape.setAsBox(this.xWidth, this.yHeight);
 
