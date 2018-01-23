@@ -6,10 +6,12 @@
 package handlers;
 
 /**
- *
+ * @author Beshoy
  * @author Kiran
+ * @author Maloof
  */
 public class box2dvairables {
+
     // PPM means pixels per metre
-   public static final float PPM = 100;
+    public static final float PPM = 100;
 }

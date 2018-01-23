@@ -11,56 +11,88 @@ import java.util.Stack;
 import main.MainClass;
 
 /**
- *
+ * @author Beshoy
  * @author Kiran
+ * @author Maloof
  */
 public class GameStateManager {
+
+    // variables required in order to create a GameStateManager
     protected MainClass game;
     protected Stack<GameState> gameStates;
     public static final int PLAY = 912837;
-    public GameStateManager(MainClass game){
+
+    /**
+     * constructor for GameStateManager
+     *
+     * @param game
+     */
+    public GameStateManager(MainClass game) {
         this.game = game;
         gameStates = new Stack<GameState>();
         pushState(PLAY);
     }
 
-    public MainClass game(){
-       return game; 
+    /**
+     *
+     * @return game
+     */
+    public MainClass game() {
+        return game;
     }
-    public void update(float dt){
+
+    /**
+     *
+     * @param dt
+     */
+    public void update(float dt) {
         gameStates.peek().update(dt);
     }
-    
-    public void render(){
+
+    /**
+     *
+     */
+    public void render() {
         gameStates.peek().render();
-        
+
     }
-    
-    private GameState getState(int state){
-        if(state == PLAY)
+
+    /**
+     *
+     * @param state
+     * @return null
+     */
+    private GameState getState(int state) {
+        if (state == PLAY) {
             return new Play(this);
-            return null;
-        
+        }
+        return null;
+
     }
-    
-    public void setState(int state){
+
+    /**
+     *
+     * @param state
+     */
+    public void setState(int state) {
         popState();
         pushState(state);
     }
-    
-    public  void pushState(int state){
+
+    /**
+     *
+     * @param state
+     */
+    public void pushState(int state) {
         gameStates.push(getState(state));
     }
-    
-    public void popState(){
-       GameState g = gameStates.pop();
-       g.dispose();
+
+    /**
+     *
+     */
+    public void popState() {
+        GameState g = gameStates.pop();
+        g.dispose();
     }
-    
-    
-    
-
-
-
 
 }

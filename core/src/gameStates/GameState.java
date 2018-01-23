@@ -12,30 +12,45 @@ import handlers.GameStateManager;
 import main.MainClass;
 
 /**
- *
+ * @author Beshoy
  * @author Kiran
+ * @author Maloof
  */
 public abstract class GameState {
-    
+
+    // variables required for box2d
     private GameStateManager gsm;
-    private  MainClass game;
-     private  SpriteBatch sb;
-     protected  OrthographicCamera cam;
-     
-      
-        
-        public GameState(GameStateManager gsm){
-         this.gsm = gsm;
-         game = gsm.game();
-         sb = game.getSpriteBatch();
-         cam = game.getCamera();
-         
-        
-     }
-     
-     public abstract void update(float dt);
-     public abstract void render();
-     public abstract void dispose();
-     
-     
+    private MainClass game;
+    private SpriteBatch sb;
+    protected OrthographicCamera cam;
+
+    /**
+     * constructor for GameState
+     *
+     * @param gsm
+     */
+    public GameState(GameStateManager gsm) {
+        // defined all variables required for a GameState
+        this.gsm = gsm;
+        game = gsm.game();
+        sb = game.getSpriteBatch();
+        cam = game.getCamera();
+    }
+
+    /**
+     *
+     * @param dt
+     */
+    public abstract void update(float dt);
+
+    /**
+     *
+     */
+    public abstract void render();
+
+    /**
+     *
+     */
+    public abstract void dispose();
+
 }

@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package gameStates;
-// imports ppm variable
 
 import main.CharacterSuper;
 import box2dLight.ConeLight;
@@ -39,13 +38,22 @@ import main.PlayerSub;
  */
 public class Play extends GameState {
 
+    // initialize a World called world
     private World world;
-    // renders bofies
+
+    // initialize integers for the aspect ratio of the game
+    private int camWidth = 1280;
+    private int camHeight = 720;
+
+    // renders bodies
     private Box2DDebugRenderer b2dr;
+    // initialize a body called playerBody
     private Body playerBody;
+    // initialize a RayHandler called handle, this is used to manage flashlights
     private RayHandler handle;
+    // initialize a ConeLight called flashlight, used for flashlights of course
     private ConeLight flashlight;
-    // my shii
+
     private Body squareBody;
     private BodyDef bodyDef;
     private PolygonShape shapes;
@@ -53,129 +61,96 @@ public class Play extends GameState {
     private PlayerSub player;
     private EnemySub enemy;
 
-    // constructor
+    /**
+     * constructor for Play
+     *
+     * @param gsm
+     */
     public Play(GameStateManager gsm) {
+        // pass in the gsm from the GameState class
         super(gsm);
-        // DEFINING BODY
-        // VECTOR 2 IS GRAVITY (x is gravity ;eft and right), true means body is asleep
+
+        // create a world
+        // 'Vector2' is GRAVITY, 0 is a force on a objects x and y, -9.8 is the gravity on all objects
         world = new World(new Vector2(0, -9.8f), true);
+
+        // create a b2dr, required to render bodies
         b2dr = new Box2DDebugRenderer();
-        // MAKE MAIN CLASS V_WIDTH AND HEIGHT LATER!!!!!
-        cam.setToOrtho(false, 1280 / PPM, 720 / PPM);
 
-        JointDef ff = new JointDef();
-        ff.type = JointType.RevoluteJoint;
+        // set the orthographic camera's screen size
+        cam.setToOrtho(false, camWidth / PPM, camHeight / PPM);
 
-        // creating a platform
-        BodyDef bdef = new BodyDef();
-        bdef.position.set(600 / PPM, 200 / PPM);
-        bdef.type = BodyType.StaticBody;
+        // define the floor fixtures
+        FixtureDef floorFixtureDef = new FixtureDef();
+        // define the floor body defintions
+        BodyDef floorBodyDef = new BodyDef();
+        // set the position of the floor, in a floor like position
+        floorBodyDef.position.set(-400 / PPM, 0 / PPM);
+        // set the floor's bodyDef to be static, as it will not move
+        floorBodyDef.type = BodyType.StaticBody;
 
-        // static body - doesnt move, unaffected by forces
-        // kinematic body (moving platform!!!)- dont get affected by forces, but velocitys can bes set
-// dynamic body - always affected by force
-        // creating body
-        // have to tell world body is created using body definition
-        Body body = world.createBody(bdef);
-        // create shape
-        PolygonShape shape = new PolygonShape();
-
-        // set the shape to be a box
-        shape.setAsBox(80 / PPM, 10 / PPM);
-        // define fixtures
-        FixtureDef fdef = new FixtureDef();
-        // set fixture as box
-        fdef.shape = shape;
-        fdef.friction = 0.1f;
-        // cretae a fixture on body using fixture defintion
-        body.createFixture(fdef);
-
-        BodyDef floorBody = new BodyDef();
-        floorBody.position.set(-400 / PPM, 0 / PPM);
         // make floor FIX SCREEN DIMENSIONS NEED TO OBTAIN FROM VARIABLE
-        Body floor = world.createBody(floorBody);
-        // create shape
-        PolygonShape shapeFloor = new PolygonShape();
-        // set the poision of the body
+        // I'm not sure what this ^ means? - Maloof
+        // create a body called floor, pass in the floor's body def
+        Body floor = world.createBody(floorBodyDef);
 
-        // set as box
-        shapeFloor.setAsBox(2560 / PPM, 10 / PPM);
-        // set shape of fixture
-        fdef.shape = shapeFloor;
-        fdef.friction = 0.1f;
-        floor.createFixture(fdef);
+        // create the floors shape
+        PolygonShape floorShape = new PolygonShape();
+        // set the shape: floorShape to be a box
+        floorShape.setAsBox(1600 / PPM, 10 / PPM);
 
-        // wall on the right
-        bdef.type = BodyType.StaticBody;
-        bdef.position.set(1200 / PPM, 1400 / PPM);
-        Body rightWall = world.createBody(bdef);
-        PolygonShape wallRight = new PolygonShape();
-        wallRight.setAsBox(10 / PPM, 1400 / PPM);
-        fdef.shape = wallRight;
-        rightWall.createFixture(fdef);
+        // set the floor's fixture def's shape as the shape we created: floorShape
+        floorFixtureDef.shape = floorShape;
+        // set the friction of the floor's fixture def 
+        floorFixtureDef.friction = 0.1f;
+        // set the bodys fixture as the fixture we created: floorFixtureDef
+        floor.createFixture(floorFixtureDef);
 
-        // crete 2 random fallin cirlces on each side (Kinematic BODIES)
-        // set body poistion
-        BodyDef fallCircle = new BodyDef();
-        fallCircle.type = BodyType.DynamicBody;
-        fallCircle.position.set(1000 / PPM, 700 / PPM);
-
-        Body circle = world.createBody(fallCircle);
-        // create sha[e
-
-        CircleShape Circle = new CircleShape();
-        // set as circle
-        Circle.setRadius(2f);
-
-        FixtureDef circleFixture = new FixtureDef();
-        circleFixture.shape = Circle;
-        circleFixture.density = 1f;
-        circleFixture.friction = 0.02f;
-        circleFixture.restitution = 0.8f;
-        circle.createFixture(circleFixture);
+        // create a player and enemy, and pass in the required parameters
         player = new PlayerSub(620, 500, 15, 15, world, squareBody, bodyDef, shapes, fixtureDef);
         enemy = new EnemySub(200, 500, 15, 15, world, squareBody, bodyDef, shapes, fixtureDef);
 
         // WORK ON IMPLEMRNTING LIGHT IN OTHER CLASSES MORE SPECIFICLLY LINK RAY HANDLER BETWEEN GAME STATE MANAGER, GAME STATE, AND PLAY
         handle = new RayHandler(world);
         handle.setCombinedMatrix(cam.combined);
-        
-        boolean hitLight = handle.pointAtLight(player.getXPosition(), player.getYPosition());
-        
-        if(hitLight == true){
-            
-        }
-        
-        // shadows
-        ConeLight circleLight = new ConeLight(handle, 100, Color.CORAL, 500, circle.getPosition().x / PPM, circle.getPosition().y / PPM, 0, 45);
-        circleLight.setActive(true);
-        circleLight.attachToBody(circle);
-
-        // apply a light to the player
-        flashlight = new ConeLight(handle, 100, Color.LIME, 500, player.getXPosition(), player.getYPosition(), -136, 45);
+        handle.setAmbientLight(0.4f);
+        // these were used to manage shadows with the circle
+        // ConeLight circleLight = new ConeLight(handle, 100, Color.CORAL, 500, circle.getPosition().x / PPM, circle.getPosition().y / PPM, 0, 45);
+        // circleLight.setActive(true);
+        // circleLight.attachToBody(circle);
+        // create a conelight and turn it "on"
+        flashlight = new ConeLight(handle, 60, Color.TAN, 6, player.getXPosition(), player.getYPosition(), -136, 45);
         flashlight.setActive(true);
 
+        // attach the conelight/flashlight to the player
         flashlight.attachToBody(player.getBody());
 
     }
 
+    /**
+     *
+     * @param dt
+     */
     @Override
     public void update(float dt) {
         // LIGHT DETECTION
         player.handleMovement();
         enemy.handleMovement();
-        //update x posiitons
+        // update x positions
         player.updateXPosition(player.getBody().getPosition().x);
         player.updateYPosition(player.getBody().getPosition().y);
         enemy.updateXPosition(enemy.getBody().getPosition().x);
         enemy.updateYPosition(enemy.getBody().getPosition().y);
 
-// 2nd parameter is accuracy of collision (velocity iteration) (six is good)
+        // 2nd parameter is accuracy of collision (velocity iteration) (six is good)
         // 3rd parameter accuracy of setting body position after colliosion (2 or 3) (position iteration)
         world.step(dt, 7, 3);
         System.out.println(player.getXPosition());
     }
 
+    /**
+     *
+     */
     @Override
     public void render() {
         // clear screen
@@ -189,6 +164,9 @@ public class Play extends GameState {
 
     }
 
+    /**
+     *
+     */
     public void dispose() {
         world.dispose();
         handle.dispose();
