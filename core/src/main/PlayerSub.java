@@ -53,57 +53,21 @@ public class PlayerSub extends CharacterSuper {
         /**
          * Update from Maloof:
          *
-         * The problem with setting a linear force is that it can't be
-         * counteracted without setting another linear force. This is causing
-         * problems especially with jumping. What we really need is some kind of
-         * force that is uniform. Lamont apparently said that we can fix this
-         * with his jump code in his example. I'll take a look
-         *
          */
-        // starting here
-        // this was an attempt to add a input processor
-        MyInputProcessor inputProcessor = new MyInputProcessor();
-        Gdx.input.setInputProcessor(inputProcessor);
-
-        boolean leftMove;
-        boolean rightMove;
-        // ends here
-
+        // Let's not keep changing the movement back to the arrow keys, as it is standard to use WASD to move in computer games, thanks - Maloof
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            this.getBody().applyLinearImpulse(0.2f, 0, this.getBody().getWorldCenter().x, this.getBody().getWorldCenter().y, true);
+            this.getBody().setLinearVelocity(2, 0);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            this.getBody().applyLinearImpulse(-0.2f, 0, this.getBody().getWorldCenter().x, this.getBody().getWorldCenter().y, true);
+            this.getBody().setLinearVelocity(-2, 0);
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-            this.getBody().applyLinearImpulse(0, 0.2f, this.getBody().getWorldCenter().x, this.getBody().getWorldCenter().y, true);
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+
+            float impulse = this.getBody().getMass() * 3;
+            this.getBody().applyLinearImpulse(0, impulse, this.getBody().getWorldCenter().x, this.getBody().getWorldCenter().y, true);
+
         } else if (!Gdx.input.isKeyPressed(Input.Keys.D) && !Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.W)) {
             this.getBody().setLinearVelocity(0, -9.8f);
         }
-
-
-
-
-//        // Let's not keep changing the movement back to the arrow keys, as it is standard to use WASD to move in computer games, thanks - Maloof
-//        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-//            // constantly moves at a set velocity once the key is pressed
-//            this.getBody().setLinearVelocity(2, 0);
-//        } else if (!Gdx.input.isKeyPressed(Input.Keys.D)) {
-//            this.getBody().set(new Vector2(-2, 0), true);
-//        } else {
-//            System.out.println("Hello");
-//        }
-//        // if 'A' key is pressed
-//        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-//            // constantly moves at a set velocity once the key is pressed
-//            this.getBody().setLinearVelocity(-2, 0);
-//
-//        }
-//        // if 'W' key is pressed
-//        if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-//            // apply force to centre parametrs (xforce, yforce,
-//            this.getBody().applyForceToCenter(0, 20, true);
-//
-//        }
     }
 }
