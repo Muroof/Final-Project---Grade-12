@@ -139,7 +139,13 @@ public class Play extends GameState {
         // WORK ON IMPLEMRNTING LIGHT IN OTHER CLASSES MORE SPECIFICLLY LINK RAY HANDLER BETWEEN GAME STATE MANAGER, GAME STATE, AND PLAY
         handle = new RayHandler(world);
         handle.setCombinedMatrix(cam.combined);
-
+        
+        boolean hitLight = handle.pointAtLight(player.getXPosition(), player.getYPosition());
+        
+        if(hitLight == true){
+            
+        }
+        
         // shadows
         ConeLight circleLight = new ConeLight(handle, 100, Color.CORAL, 500, circle.getPosition().x / PPM, circle.getPosition().y / PPM, 0, 45);
         circleLight.setActive(true);
