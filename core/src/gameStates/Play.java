@@ -43,7 +43,7 @@ import main.PlayerSub;
  * @author Kiran
  * @author Maloof
  */
-public class Play extends GameState {
+public class Play extends GameState  {
 
     // initialize a World called world
     private World world;
@@ -66,13 +66,13 @@ public class Play extends GameState {
     private EnemySub enemy;
     private ConeLight test;
 
-    private Light raycast;
+    private Light light;
     /**
      * constructor for Play
      *
      * @param gsm
      */
-    public Play(GameStateManager gsm) {
+    public Play (GameStateManager gsm) {
         // pass in the gsm from the GameState class
         super(gsm);
 
@@ -119,7 +119,7 @@ public class Play extends GameState {
         // WORK ON IMPLEMENTING LIGHT IN OTHER CLASSES MORE SPECIFICLLY LINK RAY HANDLER BETWEEN GAME STATE MANAGER, GAME STATE, AND PLAY
         handle = new RayHandler(world);
         handle.setCombinedMatrix(cam.combined);
-        handle.setAmbientLight(0.2f);
+        handle.setAmbientLight(0.1f);
         // these were used to manage shadows with the circle
         // ConeLight circleLight = new ConeLight(handle, 100, Color.CORAL, 500, circle.getPosition().x / PPM, circle.getPosition().y / PPM, 0, 45);
         // circleLight.setActive(true);
@@ -129,7 +129,7 @@ public class Play extends GameState {
         flashlight.setActive(true);
 
         // attach the conelight/flashlight to the player
-        flashlight.attachToBody(player.getBody());
+        //flashlight.attachToBody(player.getBody());
 
 
         // Light Collisions
@@ -158,10 +158,14 @@ public class Play extends GameState {
         // 3rd parameter accuracy of setting body position after colliosion (2 or 3) (position iteration)
         world.step(dt, 7, 3);
 
-        
-        if (handle.pointAtLight(player.getXPosition(), player.getYPosition())) {
-            System.out.println("LightHit");
+
+        if(test.contains((player.getXPosition()+player.getXWidth()), player.getYPosition()+player.getYHeight())){
+            System.out.println("SHIIIII");
+        } 
+        if(test.contains(player.getXPosition(), player.getYPosition())){
+            System.out.println("STILL WORKS");
         }
+test.update();
     }
 
     /**
@@ -175,6 +179,7 @@ public class Play extends GameState {
 
         // draw box 2d world
         b2dr.render(world, cam.combined);
+        
         // render light
         handle.updateAndRender();
 
