@@ -55,6 +55,7 @@ public class PlayerSub extends CharacterSuper {
         // Let's not keep changing the movement back to the arrow keys, as it is standard to use WASD to move in computer games, thanks - Maloof
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             this.getBody().setLinearVelocity(2, 0);
+            super.getMyContactListener().isPlayerOnGround();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             this.getBody().setLinearVelocity(-2, 0);

@@ -162,6 +162,14 @@ public abstract class CharacterSuper {
     public FixtureDef getFixtureDef() {
         return this.characterFixtureDef;
     }
+    
+    /**
+     * 
+     * @return 
+     */
+    public MyContactListener getMyContactListener(){
+        return cl;
+    }
 
     /**
      *
