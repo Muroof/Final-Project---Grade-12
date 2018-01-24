@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 package gameStates;
-// imports ppm variable
+
+import main.CharacterSuper;
 import box2dLight.ConeLight;
 import box2dLight.RayHandler;
 import static handlers.box2dvairables.PPM;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -20,183 +22,161 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.JointDef;
+import com.badlogic.gdx.physics.box2d.JointDef.JointType;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import handlers.GameStateManager;
-import main.CharacterSuper;
+import main.EnemySub;
+import main.MainClass;
+import main.MyContactListener;
 import main.PlayerSub;
 
 /**
- *
+ * @author Beshoy
  * @author Kiran
+ * @author Maloof
  */
 public class Play extends GameState {
 
+    // initialize a World called world
     private World world;
+
+    // initialize integers for the aspect ratio of the game
+    private int camWidth = 1280;
+    private int camHeight = 720;
+
     // renders bodies
     private Box2DDebugRenderer b2dr;
+    // initialize a body called playerBody
     private Body playerBody;
+    // initialize a RayHandler called handle, this is used to manage flashlights
     private RayHandler handle;
+    // initialize a ConeLight called flashlight, used for flashlights of course
     private ConeLight flashlight;
-    // constructor
 
+    private Body squareBody;
+    private BodyDef bodyDef;
+    private PolygonShape shapes;
+    private FixtureDef fixtureDef;
+    private PlayerSub player;
+    private EnemySub enemy;
+
+    /**
+     * constructor for Play
+     *
+     * @param gsm
+     */
     public Play(GameStateManager gsm) {
+        // pass in the gsm from the GameState class
         super(gsm);
 
-        // DEFINING BODY
-        // VECTOR 2 IS GRAVITY (x is gravity ;eft and right), true means body is asleep
-        world = new World(new Vector2(0, -1020f), true);
+        // create a world
+        // 'Vector2' is GRAVITY, 0 is a force on a objects x and y, -9.8 is the gravity on all objects
+        world = new World(new Vector2(0, -9.8f), true);
+
+        // create a b2dr, required to render bodies
         b2dr = new Box2DDebugRenderer();
 
-        // creating a platform
-        BodyDef bdef = new BodyDef();
-        bdef.position.set(600, 200);
-        bdef.type = BodyType.StaticBody;
+        // set the orthographic camera's screen size
+        cam.setToOrtho(false, camWidth / PPM, camHeight / PPM);
 
-        // static body - doesnt move, unaffected by forces
-        // kinematic body (moving platform!!!)- dont get affected by forces, but velocitys can bes set
-        // dynamic body - always affected by force
+        // define the floor fixtures
+        FixtureDef floorFixtureDef = new FixtureDef();
+        // define the floor body defintions
+        BodyDef floorBodyDef = new BodyDef();
+        // set the position of the floor, in a floor like position
+        floorBodyDef.position.set(-400 / PPM, 0 / PPM);
+        // set the floor's bodyDef to be static, as it will not move
+        floorBodyDef.type = BodyType.StaticBody;
 
-        // creating body
-        // have to tell world body is created using body definition
-        Body body = world.createBody(bdef);
-        // create shape
-        PolygonShape shape = new PolygonShape();
-
-
-        // set the shape to be a box
-        shape.setAsBox(80, 10);
-        // define fixtures
-        FixtureDef fdef = new FixtureDef();
-        // set fixture as box
-        fdef.shape = shape;
-        // cretae a fixture on body using fixture defintion
-        body.createFixture(fdef);
-
-
-        bdef.position.set(-400, 0);
         // make floor FIX SCREEN DIMENSIONS NEED TO OBTAIN FROM VARIABLE
-        Body floor = world.createBody(bdef);
-        // create shape
-        PolygonShape shapeFloor = new PolygonShape();
-        // set the poision of the body
+        // I'm not sure what this ^ means? - Maloof
+        // create a body called floor, pass in the floor's body def
+        Body floor = world.createBody(floorBodyDef);
 
-        // set as box
-        shapeFloor.setAsBox(2560, 10);
-        // set shape of fixture
-        fdef.shape = shapeFloor;
-        floor.createFixture(fdef);
+        // create the floors shape
+        PolygonShape floorShape = new PolygonShape();
+        // set the shape: floorShape to be a box
+        floorShape.setAsBox(1600 / PPM, 10 / PPM);
 
+        // set the floor's fixture def's shape as the shape we created: floorShape
+        floorFixtureDef.shape = floorShape;
+        // set the friction of the floor's fixture def 
+        floorFixtureDef.friction = 0.1f;
+        // set the bodys fixture as the fixture we created: floorFixtureDef
+        floor.createFixture(floorFixtureDef).setUserData("floor");
 
-        // wall on the right
-        bdef.type = BodyType.StaticBody;
-        bdef.position.set(1200, 1400);
-        Body rightWall = world.createBody(bdef);
-        PolygonShape wallRight = new PolygonShape();
-        wallRight.setAsBox(10, 1400);
-        fdef.shape = wallRight;
-        rightWall.createFixture(fdef);
-
-
-
-
-        // crete 2 random fallin cirlces on each side (Kinematic BODIES)
-        // set body poistion
-        bdef.type = BodyType.DynamicBody;
-        bdef.position.set(1000, 700);
-
-        Body circle = world.createBody(bdef);
-        // create sha[e
-
-        CircleShape Circle = new CircleShape();
-        // set as circle
-        Circle.setRadius(100f);
-        fdef.restitution = 1f;
-        fdef.shape = Circle;
-
-        circle.createFixture(fdef);
-
-
-//        
-//        // create falling box (PLAYER)
-//        // can reuse body definitions
-//        bdef.position.set(620,500);
-//        // make dynmic
-//        bdef.type = BodyType.DynamicBody;
-//        playerBody = world.createBody(bdef);   
-//        // make it a box
-//        shape.setAsBox(15, 15);
-//        // set the defintion to the shape
-//        fdef.shape = shape;
-//        // 1f means bounces to same spot
-//        fdef.restitution = 0.9f;
-//        // create the fixture around the player body
-//        playerBody.createFixture(fdef);
-
-
-        //CREATE SQUARE BODY FROM CHARACTER SUPER
-        PlayerSub playerBody = new PlayerSub(20, 20, world, body);
-        
+        // create a player and enemy, and pass in the required parameters
+        player = new PlayerSub(620, 500, 15, 15, world, squareBody, bodyDef, shapes, fixtureDef);
+//        enemy = new EnemySub(200, 500, 15, 15, world, squareBody, bodyDef, shapes, fixtureDef);
 
         // WORK ON IMPLEMRNTING LIGHT IN OTHER CLASSES MORE SPECIFICLLY LINK RAY HANDLER BETWEEN GAME STATE MANAGER, GAME STATE, AND PLAY
-//        handle = new RayHandler(world);
-//        handle.setCombinedMatrix(cam.combined);
-//        // shadows
-//        handle.setShadows(true);
-//        // apply a light to the player
-//        flashlight = new ConeLight(handle, 100, Color.BLUE, 500, playerBody.getPosition().x, playerBody.getPosition().y, 0, 45);
-//        flashlight.setActive(true);
-//
-//        flashlight.attachToBody(playerBody);
+        handle = new RayHandler(world);
+        handle.setCombinedMatrix(cam.combined);
+        handle.setAmbientLight(0.4f);
+        // these were used to manage shadows with the circle
+        // ConeLight circleLight = new ConeLight(handle, 100, Color.CORAL, 500, circle.getPosition().x / PPM, circle.getPosition().y / PPM, 0, 45);
+        // circleLight.setActive(true);
+        // circleLight.attachToBody(circle);
+        // create a conelight and turn it "on"
+        flashlight = new ConeLight(handle, 60, Color.TAN, 6, player.getXPosition(), player.getYPosition(), -136, 45);
+        flashlight.setActive(true);
+
+        // attach the conelight/flashlight to the player
+        flashlight.attachToBody(player.getBody());
 
     }
 
-    public void handleInput() {
-        // if right is pressed
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            // apply force to centre parametrs (xforce, yforce,
-            playerBody.applyForceToCenter(1000, 0, true);
-            playerBody.setTransform(playerBody.getPosition().x, playerBody.getPosition().y, MathUtils.degreesToRadians * 180);
-        }
-        // if left is pressed
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            // apply force to centre parametrs (xforce, yforce,
-            // apply force to centre parametrs (xforce, yforce,
-            playerBody.applyForceToCenter(-1000, 0, true);
-            playerBody.setTransform(playerBody.getPosition().x, playerBody.getPosition().y, MathUtils.degreesToRadians * 180);
-
-        }
-        // if up is pressed
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            // apply force to centre parametrs (xforce, yforce,
-            playerBody.applyForceToCenter(0, 2000, true);
-        }
-
-
-    }
-
+    /**
+     *
+     * @param dt
+     */
+    @Override
     public void update(float dt) {
-        handleInput();
-        flashlight.update();
+        // LIGHT DETECTION
+        player.handleMovement();
+//        enemy.handleMovement();
+        // update x positions
+        player.updateXPosition(player.getBody().getPosition().x);
+        player.updateYPosition(player.getBody().getPosition().y);
+//        enemy.updateXPosition(enemy.getBody().getPosition().x);
+//        enemy.updateYPosition(enemy.getBody().getPosition().y);
+
         // 2nd parameter is accuracy of collision (velocity iteration) (six is good)
         // 3rd parameter accuracy of setting body position after colliosion (2 or 3) (position iteration)
-        world.step(dt, 6, 2);
+        world.step(dt, 7, 3);
     }
 
+    /**
+     *
+     */
+    @Override
     public void render() {
         // clear screen
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
 
+        // draw box 2d world
+        b2dr.render(world, cam.combined);
         // render light
         handle.updateAndRender();
-// draw box 2d world
-        b2dr.render(world, cam.combined);
+
     }
 
+    /**
+     *
+     */
     public void dispose() {
-        handle.dispose();
         world.dispose();
+        handle.dispose();
+
     }
+
 }

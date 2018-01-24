@@ -3,15 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package handlers;
+package main;
 
 /**
  * @author Beshoy
  * @author Kiran
  * @author Maloof
  */
-public class box2dvairables {
+public class WallsFloorStationaryPlatformsSub {
+    // this class seems oddly specific - Maloof
 
-    // PPM means pixels per metre
-    public static final float PPM = 100;
 }
