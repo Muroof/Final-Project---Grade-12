@@ -6,6 +6,7 @@ package main;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -53,19 +54,23 @@ public class PlayerSub extends CharacterSuper {
          *
          */
         // Let's not keep changing the movement back to the arrow keys, as it is standard to use WASD to move in computer games, thanks - Maloof
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            this.getBody().setLinearVelocity(2, 0);
-            super.getMyContactListener().isPlayerOnGround();
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            this.getBody().setLinearVelocity(-2, 0);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            float impulse = this.getBody().getMass() * 3;
-            this.getBody().applyLinearImpulse(0, impulse, this.getBody().getWorldCenter().x, this.getBody().getWorldCenter().y, true);
 
-        } else if (!Gdx.input.isKeyPressed(Input.Keys.D) && !Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.W)) {
-            this.getBody().setLinearVelocity(0, -9.8f);
+        // The player's velocity is set to 0, if they are idile (not buttons are pressed, they are on the ground
+        if (!Gdx.input.isButtonPressed(0) && super.getMyContactListener().isPlayerOnGround()) {
+            this.getBody().setLinearVelocity(0, 0);
+        }
+        // if the 'a' key is pressed, set the linear velocity
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            this.getBody().setLinearVelocity(-3, -0.7f);
+        }
+        // if the 'd' key is pressed, set the linear velocity
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            this.getBody().setLinearVelocity(3, -0.7f);
+        }
+        // if the 'w' key is pressed, and the player is on the ground, apply a linear impylse upwards to the center of the body
+        if (Gdx.input.isKeyPressed(Input.Keys.W) && super.getMyContactListener().isPlayerOnGround()) {
+            float impulse = this.getBody().getMass() * 6;
+            this.getBody().applyLinearImpulse(0, impulse, this.getBody().getWorldCenter().x, this.getBody().getWorldCenter().y, true);
         }
     }
 }

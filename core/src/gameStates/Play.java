@@ -114,7 +114,7 @@ public class Play extends GameState {
 
         // create a player and enemy, and pass in the required parameters
         player = new PlayerSub(620, 500, 15, 15, world, squareBody, bodyDef, shapes, fixtureDef);
-        enemy = new EnemySub(200, 500, 15, 15, world, squareBody, bodyDef, shapes, fixtureDef);
+//        enemy = new EnemySub(200, 500, 15, 15, world, squareBody, bodyDef, shapes, fixtureDef);
 
         // WORK ON IMPLEMRNTING LIGHT IN OTHER CLASSES MORE SPECIFICLLY LINK RAY HANDLER BETWEEN GAME STATE MANAGER, GAME STATE, AND PLAY
         handle = new RayHandler(world);
@@ -141,12 +141,12 @@ public class Play extends GameState {
     public void update(float dt) {
         // LIGHT DETECTION
         player.handleMovement();
-        enemy.handleMovement();
+//        enemy.handleMovement();
         // update x positions
         player.updateXPosition(player.getBody().getPosition().x);
         player.updateYPosition(player.getBody().getPosition().y);
-        enemy.updateXPosition(enemy.getBody().getPosition().x);
-        enemy.updateYPosition(enemy.getBody().getPosition().y);
+//        enemy.updateXPosition(enemy.getBody().getPosition().x);
+//        enemy.updateYPosition(enemy.getBody().getPosition().y);
 
         // 2nd parameter is accuracy of collision (velocity iteration) (six is good)
         // 3rd parameter accuracy of setting body position after colliosion (2 or 3) (position iteration)

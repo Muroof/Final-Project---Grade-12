@@ -18,7 +18,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
  */
 public class MyContactListener implements ContactListener {
 
-    private boolean playerOnGround;
+    private int numberOfPlayerFloorCollisions;
 
     /**
      * called when two fixtures start to collide
@@ -32,11 +32,14 @@ public class MyContactListener implements ContactListener {
         Fixture player = c.getFixtureB();
 
         if (player.getUserData() != null && player.getUserData().equals("player")) {
-            playerOnGround = true;
+            numberOfPlayerFloorCollisions++;
+            System.out.println("player hit floor");
         }
 
         if (floor.getUserData() != null && floor.getUserData().equals("floor")) {
-            playerOnGround = true;
+            numberOfPlayerFloorCollisions++;
+            System.out.println("floor?");
+
         }
 
     }
@@ -52,17 +55,18 @@ public class MyContactListener implements ContactListener {
         Fixture player = c.getFixtureB();
 
         if (player.getUserData() != null && player.getUserData().equals("player")) {
-            playerOnGround = false;
+            numberOfPlayerFloorCollisions--;
+            System.out.println("player left floor");
         }
 
         if (floor.getUserData() != null && floor.getUserData().equals("floor")) {
-            playerOnGround = false;
+            numberOfPlayerFloorCollisions--;
         }
 
     }
 
     public boolean isPlayerOnGround() {
-        return playerOnGround;
+        return numberOfPlayerFloorCollisions > 0;
     }
 
     @Override

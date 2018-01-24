@@ -50,7 +50,7 @@ public abstract class CharacterSuper {
      * @param characterBodyDef
      * @param characterShape
      * @param characterFixtureDef
-
+     *
      */
     public CharacterSuper(float x, float y, float xWidth, float yHeight, World world, Body characterBody, BodyDef characterBodyDef, PolygonShape characterShape, FixtureDef characterFixtureDef) {
         // instance variables are set to the varaibles found in the parameters required
@@ -63,8 +63,6 @@ public abstract class CharacterSuper {
         cl = new MyContactListener();
         world.setContactListener(cl);
 
-
-        
         // creates a bodyDef for a character
         characterBodyDef = new BodyDef();
         // sets this bodyDef to a dynamic body, as forces will act on the player
@@ -162,12 +160,12 @@ public abstract class CharacterSuper {
     public FixtureDef getFixtureDef() {
         return this.characterFixtureDef;
     }
-    
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
-    public MyContactListener getMyContactListener(){
+    public MyContactListener getMyContactListener() {
         return cl;
     }
 
