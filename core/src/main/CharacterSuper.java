@@ -7,6 +7,7 @@ package main;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -35,6 +36,8 @@ public abstract class CharacterSuper {
     private float xWidth;
     private float yHeight;
 
+    private MyContactListener cl;
+
     /**
      * constructor for Character
      *
@@ -47,6 +50,7 @@ public abstract class CharacterSuper {
      * @param characterBodyDef
      * @param characterShape
      * @param characterFixtureDef
+
      */
     public CharacterSuper(float x, float y, float xWidth, float yHeight, World world, Body characterBody, BodyDef characterBodyDef, PolygonShape characterShape, FixtureDef characterFixtureDef) {
         // instance variables are set to the varaibles found in the parameters required
@@ -56,6 +60,11 @@ public abstract class CharacterSuper {
         this.xWidth = xWidth / PPM;
         this.yHeight = yHeight / PPM;
 
+        cl = new MyContactListener();
+        world.setContactListener(cl);
+
+
+        
         // creates a bodyDef for a character
         characterBodyDef = new BodyDef();
         // sets this bodyDef to a dynamic body, as forces will act on the player
@@ -80,13 +89,14 @@ public abstract class CharacterSuper {
         characterShape.setAsBox(this.xWidth, this.yHeight);
 
         // pass in the characterFixtureDef as the fixture for our characterBody
-        characterBody.createFixture(characterFixtureDef);
+        characterBody.createFixture(characterFixtureDef).setUserData("player");
 
         // make instance variables equal the parameters
         this.characterBody = characterBody;
         this.characterBodyDef = characterBodyDef;
         this.characterShape = characterShape;
         this.characterFixtureDef = characterFixtureDef;
+
     }
 
     /**

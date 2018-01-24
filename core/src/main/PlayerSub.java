@@ -5,10 +5,7 @@
 package main;
 
 import com.badlogic.gdx.Gdx;
-import static com.badlogic.gdx.Gdx.input;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -25,6 +22,7 @@ public class PlayerSub extends CharacterSuper {
     /**
      * constructor for Player
      *
+     * @param cl
      * @param playerX
      * @param playerY
      * @param xWidth
@@ -62,7 +60,6 @@ public class PlayerSub extends CharacterSuper {
             this.getBody().setLinearVelocity(-2, 0);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-
             float impulse = this.getBody().getMass() * 3;
             this.getBody().applyLinearImpulse(0, impulse, this.getBody().getWorldCenter().x, this.getBody().getWorldCenter().y, true);
 
