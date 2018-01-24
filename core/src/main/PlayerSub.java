@@ -54,22 +54,21 @@ public class PlayerSub extends CharacterSuper {
          *
          */
         // Let's not keep changing the movement back to the arrow keys, as it is standard to use WASD to move in computer games, thanks - Maloof
-
         // The player's velocity is set to 0, if they are idile (not buttons are pressed, they are on the ground
-        if (!Gdx.input.isButtonPressed(0) && super.getMyContactListener().isPlayerOnGround()) {
-            this.getBody().setLinearVelocity(0, 0);
+        if (!Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.W) && !Gdx.input.isKeyPressed(Input.Keys.D) && super.getMyContactListener().isPlayerOnGround()) {
+            this.getBody().setLinearVelocity(0, this.getBody().getLinearVelocity().y);
         }
         // if the 'a' key is pressed, set the linear velocity
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            this.getBody().setLinearVelocity(-3, -0.7f);
+            this.getBody().setLinearVelocity(-3, this.getBody().getLinearVelocity().y);
         }
         // if the 'd' key is pressed, set the linear velocity
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            this.getBody().setLinearVelocity(3, -0.7f);
+            this.getBody().setLinearVelocity(3, this.getBody().getLinearVelocity().y);
         }
         // if the 'w' key is pressed, and the player is on the ground, apply a linear impylse upwards to the center of the body
         if (Gdx.input.isKeyPressed(Input.Keys.W) && super.getMyContactListener().isPlayerOnGround()) {
-            float impulse = this.getBody().getMass() * 6;
+            float impulse = this.getBody().getMass() * 3;
             this.getBody().applyLinearImpulse(0, impulse, this.getBody().getWorldCenter().x, this.getBody().getWorldCenter().y, true);
         }
     }
