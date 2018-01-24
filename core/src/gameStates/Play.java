@@ -21,14 +21,20 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.physics.box2d.JointDef.JointType;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import handlers.GameStateManager;
 import main.EnemySub;
 import main.MainClass;
+import main.MyContactListener;
 import main.PlayerSub;
 
 /**
@@ -104,7 +110,7 @@ public class Play extends GameState {
         // set the friction of the floor's fixture def 
         floorFixtureDef.friction = 0.1f;
         // set the bodys fixture as the fixture we created: floorFixtureDef
-        floor.createFixture(floorFixtureDef);
+        floor.createFixture(floorFixtureDef).setUserData("floor");
 
         // create a player and enemy, and pass in the required parameters
         player = new PlayerSub(620, 500, 15, 15, world, squareBody, bodyDef, shapes, fixtureDef);
@@ -145,7 +151,6 @@ public class Play extends GameState {
         // 2nd parameter is accuracy of collision (velocity iteration) (six is good)
         // 3rd parameter accuracy of setting body position after colliosion (2 or 3) (position iteration)
         world.step(dt, 7, 3);
-        System.out.println(player.getXPosition());
     }
 
     /**
@@ -172,4 +177,5 @@ public class Play extends GameState {
         handle.dispose();
 
     }
+
 }
