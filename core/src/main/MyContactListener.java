@@ -33,12 +33,10 @@ public class MyContactListener implements ContactListener {
 
         if (player.getUserData() != null && player.getUserData().equals("player")) {
             numberOfPlayerFloorCollisions++;
-            System.out.println("player hit floor");
         }
 
         if (floor.getUserData() != null && floor.getUserData().equals("floor")) {
             numberOfPlayerFloorCollisions++;
-            System.out.println("floor?");
 
         }
 
@@ -56,7 +54,6 @@ public class MyContactListener implements ContactListener {
 
         if (player.getUserData() != null && player.getUserData().equals("player")) {
             numberOfPlayerFloorCollisions--;
-            System.out.println("player left floor");
         }
 
         if (floor.getUserData() != null && floor.getUserData().equals("floor")) {

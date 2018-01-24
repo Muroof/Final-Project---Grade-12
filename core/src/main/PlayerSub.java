@@ -68,7 +68,7 @@ public class PlayerSub extends CharacterSuper {
         }
         // if the 'w' key is pressed, and the player is on the ground, apply a linear impylse upwards to the center of the body
         if (Gdx.input.isKeyPressed(Input.Keys.W) && super.getMyContactListener().isPlayerOnGround()) {
-            float impulse = this.getBody().getMass() * 3;
+            float impulse = this.getBody().getMass() * 5;
             this.getBody().applyLinearImpulse(0, impulse, this.getBody().getWorldCenter().x, this.getBody().getWorldCenter().y, true);
         }
     }

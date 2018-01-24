@@ -7,6 +7,7 @@ package gameStates;
 
 import main.CharacterSuper;
 import box2dLight.ConeLight;
+import box2dLight.Light;
 import box2dLight.RayHandler;
 import static handlers.box2dvairables.PPM;
 import com.badlogic.gdx.Gdx;
@@ -46,11 +47,9 @@ public class Play extends GameState {
 
     // initialize a World called world
     private World world;
-
     // initialize integers for the aspect ratio of the game
     private int camWidth = 1280;
     private int camHeight = 720;
-
     // renders bodies
     private Box2DDebugRenderer b2dr;
     // initialize a body called playerBody
@@ -59,14 +58,15 @@ public class Play extends GameState {
     private RayHandler handle;
     // initialize a ConeLight called flashlight, used for flashlights of course
     private ConeLight flashlight;
-
     private Body squareBody;
     private BodyDef bodyDef;
     private PolygonShape shapes;
     private FixtureDef fixtureDef;
     private PlayerSub player;
     private EnemySub enemy;
+    private ConeLight test;
 
+    private Light raycast;
     /**
      * constructor for Play
      *
@@ -116,10 +116,10 @@ public class Play extends GameState {
         player = new PlayerSub(620, 500, 15, 15, world, squareBody, bodyDef, shapes, fixtureDef);
 //        enemy = new EnemySub(200, 500, 15, 15, world, squareBody, bodyDef, shapes, fixtureDef);
 
-        // WORK ON IMPLEMRNTING LIGHT IN OTHER CLASSES MORE SPECIFICLLY LINK RAY HANDLER BETWEEN GAME STATE MANAGER, GAME STATE, AND PLAY
+        // WORK ON IMPLEMENTING LIGHT IN OTHER CLASSES MORE SPECIFICLLY LINK RAY HANDLER BETWEEN GAME STATE MANAGER, GAME STATE, AND PLAY
         handle = new RayHandler(world);
         handle.setCombinedMatrix(cam.combined);
-        handle.setAmbientLight(0.4f);
+        handle.setAmbientLight(0.2f);
         // these were used to manage shadows with the circle
         // ConeLight circleLight = new ConeLight(handle, 100, Color.CORAL, 500, circle.getPosition().x / PPM, circle.getPosition().y / PPM, 0, 45);
         // circleLight.setActive(true);
@@ -131,6 +131,11 @@ public class Play extends GameState {
         // attach the conelight/flashlight to the player
         flashlight.attachToBody(player.getBody());
 
+
+        // Light Collisions
+        test = new ConeLight(handle, 60, Color.PINK, 6, 2, 2, -136, 45);
+        test.setActive(true);
+        
     }
 
     /**
@@ -147,10 +152,16 @@ public class Play extends GameState {
         player.updateYPosition(player.getBody().getPosition().y);
 //        enemy.updateXPosition(enemy.getBody().getPosition().x);
 //        enemy.updateYPosition(enemy.getBody().getPosition().y);
+//        System.out.println("x: " + player.getXPosition());
 
         // 2nd parameter is accuracy of collision (velocity iteration) (six is good)
         // 3rd parameter accuracy of setting body position after colliosion (2 or 3) (position iteration)
         world.step(dt, 7, 3);
+
+        
+        if (handle.pointAtLight(player.getXPosition(), player.getYPosition())) {
+            System.out.println("LightHit");
+        }
     }
 
     /**
@@ -177,5 +188,4 @@ public class Play extends GameState {
         handle.dispose();
 
     }
-
 }
