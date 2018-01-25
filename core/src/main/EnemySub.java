@@ -19,6 +19,7 @@ import com.badlogic.gdx.physics.box2d.World;
  */
 public class EnemySub extends CharacterSuper {
 // FOR SOME REASON, MOST LIKEY DUE TO BOX2D ONLY RECONGNIZNG TWO FIXTURES AT ONCE FOR MOVEMENT, THE ENEMIES COULD NOT BE MADE TO MOVE NORMALLY, SO WE LEFT THIS CLASS IN HERE JUST IN CASE, OTHER THAN HANDLE INPUT IT IS FUNCTIONA:
+
     /**
      * constructor for enemy
      *

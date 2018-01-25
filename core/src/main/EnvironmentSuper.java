@@ -52,20 +52,19 @@ public abstract class EnvironmentSuper {
         platformBodyDef.position.set(this.platformX, this.platformY);
 
         platformBody = enviroworld.createBody(platformBodyDef);
-        
+
         // create the sqaure polygon
         platformShape = new PolygonShape();
         // create a FixtureDef for the character
         platformFixtureDef = new FixtureDef();
         // make the characterFixtureDef's shape equal to the shape we created earlier: characterShape
         platformFixtureDef.shape = platformShape;
-        
+
         // set the charaterShape as a box
         platformShape.setAsBox(this.platformWidth, this.platformLength);
 
         // pass in the characterFixtureDef as the fixture for our characterBody
         platformBody.createFixture(platformFixtureDef).setUserData("platform");
-        
-        
+
     }
 }

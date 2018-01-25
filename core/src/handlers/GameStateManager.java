@@ -73,7 +73,8 @@ public class GameStateManager {
 
     /**
      *
-     * @param state an integer which can be used to set the current state of the game
+     * @param state an integer which can be used to set the current state of the
+     * game
      */
     public void setState(int state) {
         popState();

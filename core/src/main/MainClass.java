@@ -39,12 +39,14 @@ import static handlers.box2dvairables.HEIGHT;
 import java.awt.event.KeyListener;
 
 public class MainClass extends ApplicationAdapter {
+
     // initialize private variables
+
     private OrthographicCamera camera;
     private World world;
     private float width, height;
     private Box2DDebugRenderer renderer;
- 
+
     private KeyListener keyboard;
 
     // STUFF I ADDED FROM TUTORIAL
@@ -67,8 +69,8 @@ public class MainClass extends ApplicationAdapter {
         // create a new camera
         cam = new OrthographicCamera();
         // set the camera to the width and height of screen
-        cam.setToOrtho(false, WIDTH, HEIGHT);    
-       // create a new game state manager
+        cam.setToOrtho(false, WIDTH, HEIGHT);
+        // create a new game state manager
         gsm = new GameStateManager(this);
 
     }
@@ -99,13 +101,11 @@ public class MainClass extends ApplicationAdapter {
 
     /**
      *
-     * @return the orothographic camera
+     * @return the orthographic camera
      */
     public OrthographicCamera getCamera() {
         return cam;
 
     }
-
-   
 
 }

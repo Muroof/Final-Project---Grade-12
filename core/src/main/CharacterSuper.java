@@ -140,7 +140,7 @@ public abstract class CharacterSuper {
 
     /**
      *
-     * @return the width 
+     * @return the width
      */
     public float getXWidth() {
         return this.xWidth;

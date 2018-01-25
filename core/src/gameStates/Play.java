@@ -71,12 +71,11 @@ public class Play extends GameState {
     // create a private variable to allow time to be tracked
     private long startTime;
     private SpriteBatch batch;
-   
-    
 
     /**
-     * constructor for Play
-     * Play is the class that will be the screen the user always sees
+     * constructor for Play Play is the class that will be the screen the user
+     * always sees
+     *
      * @param gsm
      */
     public Play(GameStateManager gsm) {
@@ -177,21 +176,14 @@ public class Play extends GameState {
         player.updateXPosition(player.getBody().getPosition().x);
         player.updateYPosition(player.getBody().getPosition().y);
         // LIGHT DETECTIOM
-        // if any corner of the player is within the
-        if (enemyLight.contains(player.getXPosition(), player.getYPosition()) || enemyLight.contains(player.getXPosition() + player.getXWidth(), player.getYPosition() + player.getYHeight()) || enemyLight.contains(player.getXPosition(), player.getYPosition() + player.getYHeight()) || enemyLight.contains(player.getXPosition() + player.getXWidth(), player.getYPosition())) {
-            // if the light is visibly on
-            if (enemyLight.isActive()) {
-                // push the player back
-                player.getBody().applyForceToCenter(-10000 / PPM, 10 / PPM, true);
-            }
-        }
+        player.ifSeenByLight(enemyLight);
         // update the handler
         handle.update();
-        
+
         // 2nd parameter is accuracy of collision (velocity iteration) (six is good)
         // 3rd parameter accuracy of setting body position after colliosion (2 or 3) (position iteration)
         world.step(dt, 7, 3);
-
+        
     }
 
     /**
@@ -205,7 +197,7 @@ public class Play extends GameState {
         b2dr.render(world, cam.combined);
         // render light
         handle.updateAndRender();
-
+        
     }
 
     /**
@@ -216,6 +208,6 @@ public class Play extends GameState {
         world.dispose();
         // dispose the handler
         handle.dispose();
-
+        
     }
 }

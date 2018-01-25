@@ -4,6 +4,7 @@
  */
 package main;
 
+import box2dLight.ConeLight;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import static handlers.box2dvairables.PPM;
 
 /**
  * @author Beshoy
@@ -40,10 +42,24 @@ public class PlayerSub extends CharacterSuper {
 
     }
 
-    
-/**
- * Handles the user controlled movement of the player
- */
+    /**
+     *
+     * @param light the light the player will be interfering with
+     */
+    public void ifSeenByLight(ConeLight light) {
+        // if any corner of the player is within the
+        if (light.contains(super.getXPosition(), super.getYPosition()) || light.contains(super.getXPosition() + super.getXWidth(), super.getYPosition() + super.getYHeight()) || light.contains(super.getXPosition(), super.getYPosition() + super.getYHeight()) || light.contains(super.getXPosition() + super.getXWidth(), super.getYPosition())) {
+            // if the light is visibly on
+            if (light.isActive()) {
+                // push the player back
+                super.getBody().applyForceToCenter(-10000 / PPM, 10 / PPM, true);
+            }
+        }
+    }
+
+    /**
+     * Handles the user controlled movement of the player
+     */
     @Override
     public void handleMovement() {
         // The player's velocity is set to 0, if they are idile (not buttons are pressed, they are on the ground

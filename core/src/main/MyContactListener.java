@@ -17,7 +17,9 @@ import com.badlogic.gdx.physics.box2d.Manifold;
  * @author Maloof
  */
 public class MyContactListener implements ContactListener {
+
     // instance variable to store number of collisions
+
     private int numberOfPlayerFloorCollisions;
 
     /**
@@ -54,7 +56,7 @@ public class MyContactListener implements ContactListener {
         Fixture player = c.getFixtureB();
         // Maloof comment
         if (player.getUserData() != null && player.getUserData().equals("player")) {
-           // decrease the number of floor collisions
+            // decrease the number of floor collisions
             numberOfPlayerFloorCollisions--;
         }
         // maloof comment
@@ -66,7 +68,7 @@ public class MyContactListener implements ContactListener {
     }
 
     /**
-     * 
+     *
      * @return if the player is on the ground or not
      */
     public boolean isPlayerOnGround() {
