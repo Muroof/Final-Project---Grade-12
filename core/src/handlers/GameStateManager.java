@@ -17,10 +17,11 @@ import main.MainClass;
  */
 public class GameStateManager {
 
-    // variables required in order to create a GameStateManager
+    // variables required in order to create a GameStateManager, which is needed to effeciently run box2d
     protected MainClass game;
+    // use a stack to keep all of the possible gamestates
     protected Stack<GameState> gameStates;
-    public static final int PLAY = 912837;
+    public static final int PLAY = 90000;
 
     /**
      * constructor for GameStateManager
@@ -50,7 +51,7 @@ public class GameStateManager {
     }
 
     /**
-     *
+     * renders the the play state at the top of the stack
      */
     public void render() {
         gameStates.peek().render();
@@ -59,7 +60,7 @@ public class GameStateManager {
 
     /**
      *
-     * @param state
+     * @param state the state of the game
      * @return null
      */
     private GameState getState(int state) {
@@ -72,7 +73,7 @@ public class GameStateManager {
 
     /**
      *
-     * @param state
+     * @param state an integer which can be used to set the current state of the game
      */
     public void setState(int state) {
         popState();
@@ -88,7 +89,7 @@ public class GameStateManager {
     }
 
     /**
-     *
+     * remove the topmost state from the stack
      */
     public void popState() {
         GameState g = gameStates.pop();

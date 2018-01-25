@@ -41,15 +41,15 @@ public abstract class CharacterSuper {
     /**
      * constructor for Character
      *
-     * @param x
-     * @param y
-     * @param xWidth
-     * @param yHeight
-     * @param world
-     * @param characterBody
-     * @param characterBodyDef
-     * @param characterShape
-     * @param characterFixtureDef
+     * @param x the x coordinate of the character
+     * @param y the y coordinate of the character
+     * @param xWidth the width of the character
+     * @param yHeight the height of the character
+     * @param world the world character is being rendered in
+     * @param characterBody the body of the character itself
+     * @param characterBodyDef the body definition of the character
+     * @param characterShape the shape if the character
+     * @param characterFixtureDef the fixture definition of the character
      *
      */
     public CharacterSuper(float x, float y, float xWidth, float yHeight, World world, Body characterBody, BodyDef characterBodyDef, PolygonShape characterShape, FixtureDef characterFixtureDef) {
@@ -59,8 +59,9 @@ public abstract class CharacterSuper {
         this.characterY = y / PPM;
         this.xWidth = xWidth / PPM;
         this.yHeight = yHeight / PPM;
-
+        // intiialize contact listener
         cl = new MyContactListener();
+        // set the world to have the contact listener
         world.setContactListener(cl);
 
         // creates a bodyDef for a character
@@ -99,7 +100,7 @@ public abstract class CharacterSuper {
 
     /**
      *
-     * @return
+     * @return the body of the character
      */
     public Body getBody() {
         return this.characterBody;
@@ -107,7 +108,7 @@ public abstract class CharacterSuper {
 
     /**
      *
-     * @return
+     * @return the x position of the character
      */
     public float getXPosition() {
         return this.characterX;
@@ -115,7 +116,7 @@ public abstract class CharacterSuper {
 
     /**
      *
-     * @param x
+     * @param x updated x position of the character
      */
     public void updateXPosition(float x) {
         this.characterX = x;
@@ -123,7 +124,7 @@ public abstract class CharacterSuper {
 
     /**
      *
-     * @param y
+     * @param y updated y position of character
      */
     public void updateYPosition(float y) {
         this.characterY = y;
@@ -139,7 +140,7 @@ public abstract class CharacterSuper {
 
     /**
      *
-     * @return
+     * @return the width 
      */
     public float getXWidth() {
         return this.xWidth;
@@ -147,7 +148,7 @@ public abstract class CharacterSuper {
 
     /**
      *
-     * @return
+     * @return the height of the character
      */
     public float getYHeight() {
         return this.yHeight;

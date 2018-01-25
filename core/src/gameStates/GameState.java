@@ -5,11 +5,11 @@
  */
 package gameStates;
 
+import main.MainClass;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import handlers.GameStateManager;
-import main.MainClass;
 
 /**
  * @author Beshoy

@@ -14,7 +14,6 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -35,18 +34,17 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import handlers.GameStateManager;
+import static handlers.box2dvairables.WIDTH;
+import static handlers.box2dvairables.HEIGHT;
 import java.awt.event.KeyListener;
 
 public class MainClass extends ApplicationAdapter {
-
+    // initialize private variables
     private OrthographicCamera camera;
     private World world;
     private float width, height;
-    private FPSLogger logger;
     private Box2DDebugRenderer renderer;
-    private Body circleBody;
-    private Body squareBody;
-    private RayHandler handler;
+ 
     private KeyListener keyboard;
 
     // STUFF I ADDED FROM TUTORIAL
@@ -64,17 +62,13 @@ public class MainClass extends ApplicationAdapter {
      */
     @Override
     public void create() {
-        // STUFF I ADDED
-        // Who's I? - Maloof
-        // initialize stuff
+        // initialize spritebatch
         sb = new SpriteBatch();
+        // create a new camera
         cam = new OrthographicCamera();
-
-        // FIX BY LINKING IT TO A VARIABLE WHICH HAS SCREEN SIZE
-        cam.setToOrtho(false, 1280, 720);
-        hudCam = new OrthographicCamera();
-        // FIX BY LINKING IT TO A VARIABLE WHICH HAS SCREEN SIZE
-        hudCam.setToOrtho(false, 1280, 720);
+        // set the camera to the width and height of screen
+        cam.setToOrtho(false, WIDTH, HEIGHT);    
+       // create a new game state manager
         gsm = new GameStateManager(this);
 
     }
@@ -97,7 +91,7 @@ public class MainClass extends ApplicationAdapter {
 
     /**
      *
-     * @return
+     * @return the spritebatch
      */
     public SpriteBatch getSpriteBatch() {
         return sb;
@@ -105,19 +99,13 @@ public class MainClass extends ApplicationAdapter {
 
     /**
      *
-     * @return
+     * @return the orothographic camera
      */
     public OrthographicCamera getCamera() {
         return cam;
 
     }
 
-    /**
-     *
-     * @return
-     */
-    public OrthographicCamera getHUDCamera() {
-        return hudCam;
-    }
+   
 
 }

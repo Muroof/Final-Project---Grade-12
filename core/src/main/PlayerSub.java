@@ -24,15 +24,15 @@ public class PlayerSub extends CharacterSuper {
      * constructor for Player
      *
      * @param cl
-     * @param playerX
-     * @param playerY
-     * @param xWidth
-     * @param yHeight
-     * @param world
-     * @param playerBody
-     * @param playerBodyDef
-     * @param playerShape
-     * @param playerFixtureDef
+     * @param playerX x position of the player
+     * @param playerY y position of the player
+     * @param xWidth width of the player
+     * @param yHeight height of the player
+     * @param world the world for objects to be rendered in
+     * @param playerBody the body of the player
+     * @param playerBodyDef the body definition of the player
+     * @param playerShape the shape of the player
+     * @param playerFixtureDef the fixture defintion of the player
      */
     public PlayerSub(float playerX, float playerY, float xWidth, float yHeight, World world, Body playerBody, BodyDef playerBodyDef, PolygonShape playerShape, FixtureDef playerFixtureDef) {
         // calls on super for all parameters required
@@ -40,20 +40,12 @@ public class PlayerSub extends CharacterSuper {
 
     }
 
-    /**
-     *
-     * @param enemy
-     */
-    public void hasBeenSeenByLight(EnemySub enemy) {
-    }
-
+    
+/**
+ * Handles the user controlled movement of the player
+ */
     @Override
     public void handleMovement() {
-        /**
-         * Update from Maloof:
-         *
-         */
-        // Let's not keep changing the movement back to the arrow keys, as it is standard to use WASD to move in computer games, thanks - Maloof
         // The player's velocity is set to 0, if they are idile (not buttons are pressed, they are on the ground
         if (!Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.W) && !Gdx.input.isKeyPressed(Input.Keys.D) && super.getMyContactListener().isPlayerOnGround()) {
             this.getBody().setLinearVelocity(0, this.getBody().getLinearVelocity().y);
